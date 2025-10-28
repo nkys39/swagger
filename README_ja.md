@@ -2,6 +2,8 @@
 
 **SWAGGER (Sparse WAypoint Graph Generation for Efficient Routing)** の詳細な日本語解説ドキュメントです。
 
+> **注意**: このドキュメントは、CPU専用版（CUDA依存を削除したフォーク版）に基づいています。オリジナルのNVIDIA版はCUDA/GPU環境が必要です。
+
 ## 目次
 
 - [概要](#概要)
@@ -19,6 +21,13 @@
 
 **SWAGGER** は、占有グリッドマップから経路計画用のスパースなウェイポイントグラフを生成するPythonパッケージです。NVIDIAが開発しており、ロボットナビゲーション向けに最適化されています。
 
+### リポジトリのバージョンについて
+
+| バージョン | リポジトリ | CUDA要件 | 特徴 |
+|----------|-----------|---------|------|
+| **オリジナル版** | [nvidia-isaac/SWAGGER](https://github.com/nvidia-isaac/SWAGGER) | **必須** (CUDA 12.5+) | GPU高速化あり |
+| **CPU専用版（このフォーク）** | [nkys39/swagger](https://github.com/nkys39/swagger) | **不要** | CPU環境で動作 |
+
 ### 主な特徴
 
 - 占有グリッドマップから効率的なウェイポイントグラフを自動生成
@@ -26,7 +35,7 @@
 - 境界サンプリングによる障害物付近のカバレッジ改善
 - 自由空間の効率的なサンプリング
 - Delaunay三角分割によるショートカット追加
-- CPU環境で動作（CUDA不要）
+- **CPU環境で動作（CUDA不要）** ※このフォークのみ
 
 ---
 
@@ -34,15 +43,24 @@
 
 ### システム要件
 
+#### オリジナル版（NVIDIA公式）
 - Python 3.10以降
 - Linux (Ubuntu 22.04推奨)
+- **CUDA 12.5以降** + NVIDIA CUDA toolkit
+
+#### CPU専用版（このフォーク）
+- Python 3.10以降
+- Linux (Ubuntu 22.04推奨)
+- **CUDA不要**
 
 ### インストール
 
+#### CPU専用版（このフォーク）のインストール
+
 ```bash
 # 1. リポジトリをクローン
-git clone git@github.com:nvidia-isaac/SWAGGER.git
-cd SWAGGER
+git clone git@github.com:nkys39/swagger.git
+cd swagger
 
 # 2. サンプルマップを使う場合のみ（オプション）
 git lfs pull
@@ -57,6 +75,10 @@ source swagger-venv/bin/activate
 # 5. SWAGGERライブラリのインストール
 pip install -e .
 ```
+
+#### オリジナル版（GPU版）のインストール
+
+オリジナル版を使用する場合は、[公式リポジトリのREADME](https://github.com/nvidia-isaac/SWAGGER)を参照してください。CUDA環境のセットアップが必要です。
 
 ### 基本的な使い方
 
@@ -1023,9 +1045,11 @@ git lfs install
 
 ## CPU版について
 
-このリポジトリは**CPU環境で動作**します。CUDA/GPUは不要です。
+**このフォーク（nkys39/swagger）**は**CPU環境で動作**します。CUDA/GPUは不要です。
 
-### 変更内容
+> **重要**: CPU専用版は**このフォークのみ**の機能です。オリジナルのNVIDIA公式リポジトリ（nvidia-isaac/SWAGGER）にはCUDA依存があります。
+
+### フォークでの変更内容
 
 以下の変更により、CUDA依存を完全に削除しました:
 
@@ -1035,24 +1059,26 @@ git lfs install
    - `skimage.morphology.skeletonize`（CPU版）を使用
 3. **README.md**: システム要件からCUDA記載を削除
 
+コミット: `1314408 - Remove CUDA dependencies to enable CPU-only execution`
+
 ### パフォーマンスへの影響
 
 **変更箇所**: スケルトン生成処理のみ
 
-- **GPU版（cucim）**: CUDA高速化あり
-- **CPU版（skimage）**: やや遅いが機能的には同等
+- **GPU版（cucim）**: CUDA高速化あり - オリジナル版で使用
+- **CPU版（skimage）**: やや遅いが機能的には同等 - **このフォークで使用**
 
 **他の処理**: 元々CPUで実行されていたため影響なし
 - 距離変換（OpenCV）
 - Delaunay三角分割（Scipy）
 - グラフ操作（NetworkX）
 
-### インストール（CPU版）
+### インストール（CPU専用版）
 
 ```bash
-# CUDA不要！
-git clone git@github.com:nvidia-isaac/SWAGGER.git
-cd SWAGGER
+# CUDA不要！このフォークを使用
+git clone git@github.com:nkys39/swagger.git
+cd swagger
 
 # オプション: サンプルマップを使う場合のみ
 git lfs pull
@@ -1084,7 +1110,13 @@ CPU版とGPU版の処理時間比較（参考値）:
 
 ## 参考リンク
 
-- [公式リポジトリ](https://github.com/nvidia-isaac/SWAGGER)
+### リポジトリ
+
+- [オリジナル公式リポジトリ（GPU版）](https://github.com/nvidia-isaac/SWAGGER)
+- [このフォーク（CPU専用版）](https://github.com/nkys39/swagger)
+
+### ドキュメント
+
 - [アルゴリズム概要](docs/algorithm.md)
 - [チュートリアル](docs/tutorial.md)
 - [評価方法](docs/evaluation.md)
