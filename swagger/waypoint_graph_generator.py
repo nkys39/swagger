@@ -153,6 +153,7 @@ class WaypointGraphGenerator:
             NetworkX.Graph object containing the waypoint graph
         """
         self._logger.info("Building graph from grid map...")
+        self._logger.info(f"Parameters: resolution={resolution}m/px, safety_distance={safety_distance}m, occupancy_threshold={occupancy_threshold}")
         self._resolution = resolution
         self._safety_distance = safety_distance
         self._original_map = copy.deepcopy(image)
@@ -170,6 +171,10 @@ class WaypointGraphGenerator:
 
         # Check if map is completely free before performing distance transform
         free_map = (self._original_map > self._occupancy_threshold).astype(np.uint8)
+        free_pixels = np.sum(free_map)
+        total_pixels = free_map.size
+        free_percentage = (free_pixels / total_pixels) * 100
+        self._logger.info(f"Free space: {free_pixels}/{total_pixels} pixels ({free_percentage:.1f}%) with threshold={self._occupancy_threshold}")
         if np.all(free_map):
             # Map is completely free (all values > threshold), create grid graph directly
             self._graph = self._create_grid_graph(
