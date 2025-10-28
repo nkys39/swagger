@@ -19,15 +19,14 @@ import os
 from dataclasses import dataclass, field
 from typing import Optional
 
-import cupy as cp
 import cv2
 import networkx as nx
 import numba
 import numpy as np
 import skan
-from cucim.skimage.morphology import thin
 from rtree import index
 from scipy.spatial import Delaunay, cKDTree
+from skimage.morphology import skeletonize
 
 from swagger.logger import Logger
 from swagger.models import Point
@@ -355,26 +354,15 @@ class WaypointGraphGenerator:
 
     def _build_graph_from_skeleton(self, skeleton_sample_distance: int) -> np.ndarray:
         """Generate a graph from the skeleton of the inflated map."""
-        self._logger.info("Generating skeleton...")
-        try:
-            skeleton_image = thin((1 - self._inflated_map).view(cp.uint8))
-        except RuntimeError as e:
-            from skimage.morphology import skeletonize
-
-            self._logger.warning(f"Failed to generate skeleton with cucim: {e}. Falling back to skimage.")
-            skeleton_image = skeletonize(1 - self._inflated_map)
+        self._logger.info("Generating skeleton using CPU (skimage)...")
+        skeleton_image = skeletonize(1 - self._inflated_map)
 
         if skeleton_image.sum() == 0:
             self._logger.warning("No skeleton found in map")
             return nx.Graph()
 
         self._logger.info("Building graph from skeleton...")
-        # Convert to numpy if it's a cupy array, otherwise use as-is
-        if hasattr(skeleton_image, "get"):  # cupy array
-            skeleton_image_np = skeleton_image.get()
-        else:  # numpy array
-            skeleton_image_np = skeleton_image
-        skeleton = skan.Skeleton(skeleton_image_np)
+        skeleton = skan.Skeleton(skeleton_image)
         graph = nx.Graph()
 
         for i in range(skeleton.n_paths):

@@ -33,7 +33,6 @@ See [algorithm overview](docs/algorithm.md) for an introduction of the method.
 
 ## System Requirements
 * Python 3.10 or newer
-* [CUDA 12.5](https://developer.nvidia.com/cuda-12-5-0-download-archive) or newer (including NVIDIA CUDA toolkit)
 
 ## Installation
 

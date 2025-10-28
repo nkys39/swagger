@@ -9,7 +9,6 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
 colorlog = ">=6.9.0,<7.0.0"
-cucim-cu12 = ">=25.4.0,<26.0.0"
 fastapi = ">=0.115.12,<0.116.0"
 fastapi-versioning = ">=0.10.0,<0.11.0"
 h11 = ">=0.16.0"
