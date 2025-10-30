@@ -36,27 +36,45 @@ See [algorithm overview](docs/algorithm.md) for an introduction of the method.
 
 ## Installation
 
-1. Clone the repository.
+### Prerequisites
 
-    ```bash
-    git clone git@github.com:nvidia-isaac/SWAGGER.git
-    cd SWAGGER
-    git lfs pull
-    ```
-
-2. Install required packages.
+Install required system packages:
 ```bash
 sudo apt update && sudo apt install -y libgl1-mesa-glx libglib2.0-0
 ```
 
-3. Start a virtual environment.
+### Method 1: Using uv (Recommended - Fast!)
+
+[uv](https://github.com/astral-sh/uv) is a fast Python package installer and resolver.
+
 ```bash
-python -m venv swagger-venv
-source swagger-venv/bin/activate
+# Install uv if not already installed
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Clone the repository
+git clone git@github.com:nvidia-isaac/SWAGGER.git
+cd SWAGGER
+git lfs pull  # Optional: only if you need sample maps
+
+# Create virtual environment and install
+uv venv
+source .venv/bin/activate
+uv pip install -e .
 ```
 
-4. Install the SWAGGER library.
+### Method 2: Using pip/venv (Traditional)
+
 ```bash
+# Clone the repository
+git clone git@github.com:nvidia-isaac/SWAGGER.git
+cd SWAGGER
+git lfs pull  # Optional: only if you need sample maps
+
+# Create and activate virtual environment
+python -m venv swagger-venv
+source swagger-venv/bin/activate
+
+# Install the package
 pip install -e .
 ```
 

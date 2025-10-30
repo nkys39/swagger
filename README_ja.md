@@ -55,24 +55,45 @@
 
 ### インストール
 
-#### CPU専用版（このフォーク）のインストール
+#### 前提条件
+
+システムパッケージのインストール：
+```bash
+sudo apt update && sudo apt install -y libgl1-mesa-glx libglib2.0-0
+```
+
+#### 方法1: uvを使う（推奨 - 高速！）
+
+[uv](https://github.com/astral-sh/uv) は高速なPythonパッケージインストーラーです。
 
 ```bash
-# 1. リポジトリをクローン
+# uvをインストール（未インストールの場合）
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# リポジトリをクローン
 git clone git@github.com:nkys39/swagger.git
 cd swagger
+git lfs pull  # オプション: サンプルマップを使う場合のみ
 
-# 2. サンプルマップを使う場合のみ（オプション）
-git lfs pull
+# 仮想環境を作成してインストール
+uv venv
+source .venv/bin/activate
+uv pip install -e .
+```
 
-# 3. 依存パッケージのインストール
-sudo apt update && sudo apt install -y libgl1-mesa-glx libglib2.0-0
+#### 方法2: pip/venvを使う（従来の方法）
 
-# 4. 仮想環境の作成
+```bash
+# リポジトリをクローン
+git clone git@github.com:nkys39/swagger.git
+cd swagger
+git lfs pull  # オプション: サンプルマップを使う場合のみ
+
+# 仮想環境を作成してアクティベート
 python -m venv swagger-venv
 source swagger-venv/bin/activate
 
-# 5. SWAGGERライブラリのインストール
+# パッケージをインストール
 pip install -e .
 ```
 
@@ -1074,6 +1095,27 @@ git lfs install
 - グラフ操作（NetworkX）
 
 ### インストール（CPU専用版）
+
+#### uvを使う方法（推奨）
+
+```bash
+# CUDA不要！このフォークを使用
+git clone git@github.com:nkys39/swagger.git
+cd swagger
+
+# オプション: サンプルマップを使う場合のみ
+git lfs pull
+
+# 依存パッケージのインストール
+sudo apt update && sudo apt install -y libgl1-mesa-glx libglib2.0-0
+
+# uvで仮想環境を作成してインストール
+uv venv
+source .venv/bin/activate
+uv pip install -e .
+```
+
+#### pip/venvを使う方法（従来）
 
 ```bash
 # CUDA不要！このフォークを使用
