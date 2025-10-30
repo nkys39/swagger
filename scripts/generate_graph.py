@@ -59,6 +59,21 @@ class Args:
     rotation: float = 0.0  # Rotation in radians
     output_dir: str = "graphs"  # Directory to save output files
 
+    # Algorithm step flags (enable/disable each step)
+    use_skeleton_graph: bool = True  # Step 2: Build skeleton graph
+    use_boundary_sampling: bool = True  # Step 3: Sample obstacle boundaries
+    use_free_space_sampling: bool = True  # Step 4: Sample free space
+    use_delaunay_shortcuts: bool = True  # Step 5: Add Delaunay triangulation shortcuts
+    prune_graph: bool = True  # Step 6: Prune graph
+
+    # Algorithm parameters (in meters)
+    skeleton_sample_distance: float = 1.5  # Distance between skeleton samples
+    boundary_inflation_factor: float = 1.5  # Boundary inflation factor
+    boundary_sample_distance: float = 2.5  # Distance between boundary samples
+    free_space_sampling_threshold: float = 1.5  # Free space sampling threshold
+    merge_node_distance: float = 0.25  # Distance to merge nodes
+    min_subgraph_length: float = 0.25  # Minimum subgraph length to keep
+
     # Graph evaluation settings
     graph_eval: GraphEvalConfig = field(default_factory=GraphEvalConfig)
 
@@ -161,8 +176,31 @@ def main():
     args = tyro.cli(Args)
     logger = Logger("generate_graph")
 
-    # Initialize generator
-    config = WaypointGraphGeneratorConfig()
+    # Initialize generator with custom configuration from CLI args
+    config = WaypointGraphGeneratorConfig(
+        # Algorithm step flags
+        use_skeleton_graph=args.use_skeleton_graph,
+        use_boundary_sampling=args.use_boundary_sampling,
+        use_free_space_sampling=args.use_free_space_sampling,
+        use_delaunay_shortcuts=args.use_delaunay_shortcuts,
+        prune_graph=args.prune_graph,
+        # Algorithm parameters
+        skeleton_sample_distance=args.skeleton_sample_distance,
+        boundary_inflation_factor=args.boundary_inflation_factor,
+        boundary_sample_distance=args.boundary_sample_distance,
+        free_space_sampling_threshold=args.free_space_sampling_threshold,
+        merge_node_distance=args.merge_node_distance,
+        min_subgraph_length=args.min_subgraph_length,
+    )
+
+    # Log which steps are enabled
+    logger.info("Algorithm steps enabled:")
+    logger.info(f"  Step 2 - Skeleton graph: {args.use_skeleton_graph}")
+    logger.info(f"  Step 3 - Boundary sampling: {args.use_boundary_sampling}")
+    logger.info(f"  Step 4 - Free space sampling: {args.use_free_space_sampling}")
+    logger.info(f"  Step 5 - Delaunay shortcuts: {args.use_delaunay_shortcuts}")
+    logger.info(f"  Step 6 - Graph pruning: {args.prune_graph}")
+
     generator = WaypointGraphGenerator(config=config)
 
     # Initialize performance evaluator if needed
