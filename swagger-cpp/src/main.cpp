@@ -287,6 +287,7 @@ int main(int argc, char* argv[]) {
         if (config.prune) {
             swagger::GraphPruner::prune_graph(
                 graph,
+                step1_data,
                 config.merge_distance,
                 config.min_subgraph_length,
                 config.verbose
