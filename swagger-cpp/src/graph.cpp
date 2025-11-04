@@ -1,6 +1,7 @@
 #include "graph.hpp"
 #include <stdexcept>
 #include <algorithm>
+#include <queue>
 
 namespace swagger {
 
@@ -107,6 +108,98 @@ void Graph::clear() {
     edges_set_.clear();
     edges_.clear();
     adjacency_.clear();
+}
+
+void Graph::remove_node(const NodeId& node_id) {
+    // Remove all edges connected to this node
+    if (adjacency_.find(node_id) != adjacency_.end()) {
+        auto neighbors_copy = adjacency_[node_id];
+        for (const auto& neighbor : neighbors_copy) {
+            remove_edge(node_id, neighbor);
+        }
+    }
+
+    // Remove node
+    nodes_.erase(node_id);
+    adjacency_.erase(node_id);
+}
+
+void Graph::remove_edge(const NodeId& src, const NodeId& dst) {
+    auto edge = src < dst ? std::make_pair(src, dst) : std::make_pair(dst, src);
+
+    edges_set_.erase(edge);
+    edges_.erase(edge);
+
+    if (adjacency_.find(src) != adjacency_.end()) {
+        adjacency_[src].erase(dst);
+    }
+    if (adjacency_.find(dst) != adjacency_.end()) {
+        adjacency_[dst].erase(src);
+    }
+}
+
+size_t Graph::degree(const NodeId& node_id) const {
+    auto it = adjacency_.find(node_id);
+    if (it == adjacency_.end()) {
+        return 0;
+    }
+    return it->second.size();
+}
+
+std::vector<std::set<NodeId>> Graph::get_connected_components() const {
+    std::set<NodeId> visited;
+    std::vector<std::set<NodeId>> components;
+
+    for (const auto& [node_id, _] : nodes_) {
+        if (visited.find(node_id) != visited.end()) {
+            continue;
+        }
+
+        // BFS to find component
+        std::set<NodeId> component;
+        std::queue<NodeId> queue;
+        queue.push(node_id);
+        visited.insert(node_id);
+
+        while (!queue.empty()) {
+            NodeId current = queue.front();
+            queue.pop();
+            component.insert(current);
+
+            for (const auto& neighbor : neighbors(current)) {
+                if (visited.find(neighbor) == visited.end()) {
+                    visited.insert(neighbor);
+                    queue.push(neighbor);
+                }
+            }
+        }
+
+        components.push_back(component);
+    }
+
+    return components;
+}
+
+Graph Graph::get_subgraph(const std::set<NodeId>& nodes_subset) const {
+    Graph subgraph;
+
+    // Add nodes
+    for (const auto& node : nodes_subset) {
+        if (has_node(node)) {
+            subgraph.add_node(node, get_node_data(node));
+        }
+    }
+
+    // Add edges
+    for (const auto& node : nodes_subset) {
+        for (const auto& neighbor : neighbors(node)) {
+            if (nodes_subset.find(neighbor) != nodes_subset.end() && node < neighbor) {
+                subgraph.add_edge(node, neighbor, get_edge_data(node, neighbor));
+            }
+        }
+    }
+
+    return subgraph;
 }
 
 } // namespace swagger

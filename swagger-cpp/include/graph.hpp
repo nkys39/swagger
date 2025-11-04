@@ -6,15 +6,25 @@
 #include <string>
 #include <utility>
 #include <cmath>
+#include <optional>
 
 namespace swagger {
 
 // Node ID type (row, col)
 using NodeId = std::pair<int, int>;
 
+// World coordinate
+struct WorldCoord {
+    double x, y, z;
+
+    WorldCoord() : x(0), y(0), z(0) {}
+    WorldCoord(double x_, double y_, double z_) : x(x_), y(y_), z(z_) {}
+};
+
 // Node attributes
 struct NodeData {
     std::string node_type;
+    std::optional<WorldCoord> world;  // Optional world coordinates (set in Step 6)
 
     NodeData() : node_type("unknown") {}
     explicit NodeData(const std::string& type) : node_type(type) {}
@@ -69,6 +79,21 @@ public:
 
     // Clear graph
     void clear();
+
+    // Remove node (and all connected edges)
+    void remove_node(const NodeId& node_id);
+
+    // Remove edge
+    void remove_edge(const NodeId& src, const NodeId& dst);
+
+    // Get node degree
+    size_t degree(const NodeId& node_id) const;
+
+    // Get connected components
+    std::vector<std::set<NodeId>> get_connected_components() const;
+
+    // Get subgraph
+    Graph get_subgraph(const std::set<NodeId>& nodes) const;
 
 private:
     std::map<NodeId, NodeData> nodes_;
