@@ -368,6 +368,17 @@ class WaypointGraphGenerator:
 
         self._logger.info("Building graph from skeleton...")
         skeleton = skan.Skeleton(skeleton_image)
+        self._logger.info(f"Skeleton analysis: {skeleton.n_paths} paths found")
+
+        # Calculate path statistics
+        if skeleton.n_paths > 0:
+            path_lengths = [len(skeleton.path_coordinates(i)) for i in range(skeleton.n_paths)]
+            avg_length = sum(path_lengths) / len(path_lengths)
+            self._logger.info(f"Path statistics:")
+            self._logger.info(f"  Average length: {int(avg_length)}px")
+            self._logger.info(f"  Min length: {min(path_lengths)}px")
+            self._logger.info(f"  Max length: {max(path_lengths)}px")
+
         graph = nx.Graph()
 
         for i in range(skeleton.n_paths):
@@ -429,6 +440,9 @@ class WaypointGraphGenerator:
             graph: The graph to which new nodes will be added.
             distance_threshold: The threshold to identify areas with large distances.
         """
+        initial_nodes = len(graph.nodes())
+        self._logger.info("Sampling free space areas...")
+
         # Initialize distance map with a large value
         distance_map = np.full(self._original_map.shape, np.inf, dtype=np.float64)
 
@@ -473,9 +487,13 @@ class WaypointGraphGenerator:
                 bounding_box = (col - half_threshold, row - half_threshold, col + half_threshold, row + half_threshold)
                 intersections = list(idx.intersection(bounding_box))
                 if len(intersections) == 0:
-                    graph.add_node((row, col))
+                    graph.add_node((row, col), node_type="free_space")
                     idx.insert(len(graph.nodes) - 1, (col, row, col, row))  # Insert node into R-tree
                     distance_map[row, col] = 0
+
+        # Log completion
+        nodes_added = len(graph.nodes()) - initial_nodes
+        self._logger.info(f"Added {nodes_added} free space nodes")
 
     def _add_delaunay_shortcuts(self, graph: nx.Graph):
         """

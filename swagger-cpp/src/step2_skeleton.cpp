@@ -343,6 +343,24 @@ void SkeletonGraphBuilder::build_skeleton_graph(
     std::vector<SkeletonBranch> branches = extract_branches(skeleton, junctions, endpoints);
     log("抽出されたブランチ数: " + std::to_string(branches.size()), verbose);
 
+    // Calculate branch statistics
+    if (verbose && !branches.empty()) {
+        double total_length = 0;
+        int min_length = INT_MAX;
+        int max_length = 0;
+        for (const auto& branch : branches) {
+            int len = branch.coordinates.size();
+            total_length += len;
+            min_length = std::min(min_length, len);
+            max_length = std::max(max_length, len);
+        }
+        double avg_length = total_length / branches.size();
+        log("ブランチ統計:", verbose);
+        log("  平均長: " + std::to_string(static_cast<int>(avg_length)) + "px", verbose);
+        log("  最小長: " + std::to_string(min_length) + "px", verbose);
+        log("  最大長: " + std::to_string(max_length) + "px", verbose);
+    }
+
     // Sample points along branches
     int sample_distance_px = static_cast<int>(skeleton_sample_distance / step1_data.resolution);
     log("サンプリング距離: " + std::to_string(skeleton_sample_distance) + "m = " +
