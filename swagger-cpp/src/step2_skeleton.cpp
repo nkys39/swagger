@@ -6,6 +6,8 @@
 #include <cmath>
 #include <algorithm>
 #include <opencv2/ximgproc.hpp>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 namespace swagger {
 
@@ -337,6 +339,18 @@ void SkeletonGraphBuilder::build_skeleton_graph(
 
     log("分岐点: " + std::to_string(junctions.size()) + "個", verbose);
     log("終端点: " + std::to_string(endpoints.size()) + "個", verbose);
+
+    // Save skeleton image for debugging
+    if (verbose) {
+        std::string debug_dir = "debug_output";
+        #ifdef _WIN32
+            _mkdir(debug_dir.c_str());
+        #else
+            mkdir(debug_dir.c_str(), 0755);
+        #endif
+        cv::imwrite(debug_dir + "/skeleton_cpp.png", skeleton);
+        log("スケルトン画像を保存しました: debug_output/skeleton_cpp.png", verbose);
+    }
 
     // Extract branches from skeleton
     log("ブランチを抽出中...", verbose);

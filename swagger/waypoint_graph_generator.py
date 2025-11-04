@@ -360,11 +360,45 @@ class WaypointGraphGenerator:
     def _build_graph_from_skeleton(self, skeleton_sample_distance: int) -> np.ndarray:
         """Generate a graph from the skeleton of the inflated map."""
         self._logger.info("Generating skeleton using CPU (skimage)...")
+        self._logger.info("Using skimage.morphology.skeletonize (default method)")
         skeleton_image = skeletonize(1 - self._inflated_map)
 
         if skeleton_image.sum() == 0:
             self._logger.warning("No skeleton found in map")
             return nx.Graph()
+
+        # Log skeleton statistics
+        skeleton_pixels = skeleton_image.sum()
+        self._logger.info(f"Skeleton pixels: {skeleton_pixels}")
+
+        # Count junctions and endpoints for comparison with C++
+        skeleton_uint8 = (skeleton_image * 255).astype(np.uint8)
+        junctions = 0
+        endpoints = 0
+        for y in range(1, skeleton_uint8.shape[0] - 1):
+            for x in range(1, skeleton_uint8.shape[1] - 1):
+                if skeleton_uint8[y, x] > 0:
+                    # Count 8-connected neighbors
+                    neighbors = 0
+                    for dy in [-1, 0, 1]:
+                        for dx in [-1, 0, 1]:
+                            if dy == 0 and dx == 0:
+                                continue
+                            if skeleton_uint8[y + dy, x + dx] > 0:
+                                neighbors += 1
+                    if neighbors >= 3:
+                        junctions += 1
+                    elif neighbors == 1:
+                        endpoints += 1
+
+        self._logger.info(f"Skeleton topology: {junctions} junctions, {endpoints} endpoints")
+
+        # Save skeleton image for debugging
+        import cv2
+        import os
+        os.makedirs("debug_output", exist_ok=True)
+        cv2.imwrite("debug_output/skeleton_python.png", skeleton_uint8)
+        self._logger.info("Saved skeleton image to debug_output/skeleton_python.png")
 
         self._logger.info("Building graph from skeleton...")
         skeleton = skan.Skeleton(skeleton_image)
