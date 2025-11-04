@@ -126,6 +126,18 @@ def main():
     # Print final statistics
     print_graph_stats(graph, "最終結果")
 
+    # Visualize and save
+    output_dir = "output_python"
+    import os
+    os.makedirs(output_dir, exist_ok=True)
+
+    print(f"\nグラフを可視化中... 出力先: {output_dir}/")
+    generator.visualize_graph(
+        output_dir=output_dir,
+        output_filename="waypoint_graph.png"
+    )
+    print(f"保存完了: {output_dir}/waypoint_graph.png")
+
     print("=" * 60)
     print("処理完了！")
     print("=" * 60)
