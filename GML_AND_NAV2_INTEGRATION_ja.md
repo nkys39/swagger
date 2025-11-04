@@ -141,11 +141,236 @@ python3 integration/nav2/tools/gml_to_geojson.py \
     -o output/graph.geojson
 ```
 
-**GeoJSON形式の特徴:**
-- EPSG:3857 座標系（Web Mercator）
-- ノードは Point フィーチャー
-- エッジは LineString フィーチャー（双方向）
-- Nav2 Route Serverと互換性あり
+#### GeoJSON形式とは
+
+**GeoJSON**は地理空間データを表現するためのオープン標準フォーマットです（RFC 7946）。
+
+**特徴:**
+- ✅ JSON（JavaScript Object Notation）ベース
+- ✅ 地理座標を含む図形を表現
+- ✅ Web地図サービスで広く採用
+- ✅ 人間が読み書き可能
+- ✅ Webブラウザで直接処理可能
+
+**主な用途:**
+- Web地図サービス（Leaflet, Mapbox, Google Maps）
+- GISアプリケーション（QGIS, ArcGIS）
+- ロボティクス（Nav2 Route Server）
+- データ可視化
+
+#### GeoJSON形式の構造
+
+**基本構造:**
+```json
+{
+  "type": "FeatureCollection",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:3857"
+    }
+  },
+  "features": [
+    // ノードとエッジのフィーチャー
+  ]
+}
+```
+
+**ノード（Point フィーチャー）:**
+```json
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [12.34, 56.78]  // [x, y] in EPSG:3857
+  },
+  "properties": {
+    "id": 0,
+    "label": "0",
+    "world_x": 12.34,
+    "world_y": 56.78,
+    "world_z": 0.0,
+    "pixel_row": 247,
+    "pixel_col": 1135
+  }
+}
+```
+
+**エッジ（LineString フィーチャー）:**
+```json
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "MultiLineString",
+    "coordinates": [
+      [[12.34, 56.78], [12.45, 56.89]],  // 順方向
+      [[12.45, 56.89], [12.34, 56.78]]   // 逆方向（双方向）
+    ]
+  },
+  "properties": {
+    "source": 0,
+    "target": 1,
+    "weight": 1.52,
+    "edge_type": "skeleton",
+    "bidirectional": true
+  }
+}
+```
+
+#### 座標参照系（CRS）
+
+**EPSG:3857（Web Mercator）:**
+- Web地図で標準的に使用
+- メートル単位の座標系
+- Google Maps、OpenStreetMapなどで採用
+- 赤道付近で最も正確
+
+**座標範囲:**
+- X軸: -20,037,508.34 ～ 20,037,508.34（メートル）
+- Y軸: -20,037,508.34 ～ 20,037,508.34（メートル）
+
+#### GML vs GeoJSON 比較
+
+| 項目 | GML | GeoJSON |
+|------|-----|---------|
+| **形式** | テキスト（独自） | JSON |
+| **可読性** | 中 | 高 |
+| **ファイルサイズ** | 小 | 中 |
+| **Web対応** | 限定的 | 優れている |
+| **座標系** | 任意 | EPSG:3857が一般的 |
+| **用途** | グラフ処理 | Web地図、GIS |
+| **Nav2対応** | 不可（変換必要） | 可（Route Server） |
+| **可視化ツール** | Gephi等 | Web地図サービス |
+
+#### 変換プロセスの詳細
+
+**変換ツールが行うこと:**
+
+1. **GMLパース**
+   - ノード属性（id, world, pixel）を読み取り
+   - エッジ属性（source, target, weight, edge_type）を読み取り
+
+2. **座標変換**
+   - ワールド座標（メートル）→ EPSG:3857座標
+   - 必要に応じてオフセット・回転を適用
+
+3. **フィーチャー生成**
+   - 各ノード → Point フィーチャー
+   - 各エッジ → MultiLineString フィーチャー（双方向）
+
+4. **メタデータ追加**
+   - 生成日時のタイムスタンプ
+   - グラフ統計情報（ノード数、エッジ数）
+
+**変換コマンドのオプション:**
+```bash
+python3 integration/nav2/tools/gml_to_geojson.py \
+    output/graph.gml \
+    -o output/graph.geojson
+```
+
+#### 生成されるGeoJSONの例
+
+```json
+{
+  "type": "FeatureCollection",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:3857"
+    }
+  },
+  "metadata": {
+    "generated_at": "2025-11-04T12:34:56Z",
+    "node_count": 68,
+    "edge_count": 124,
+    "source": "SWAGGER Waypoint Graph Generator"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1234.56, 7890.12]
+      },
+      "properties": {
+        "id": 0,
+        "label": "0",
+        "world_x": 1234.56,
+        "world_y": 7890.12,
+        "world_z": 0.0,
+        "pixel_row": 247,
+        "pixel_col": 1135,
+        "node_type": "waypoint"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "MultiLineString",
+        "coordinates": [
+          [[1234.56, 7890.12], [1235.67, 7891.23]],
+          [[1235.67, 7891.23], [1234.56, 7890.12]]
+        ]
+      },
+      "properties": {
+        "source": 0,
+        "target": 1,
+        "weight": 1.52,
+        "edge_type": "skeleton",
+        "bidirectional": true
+      }
+    }
+  ]
+}
+```
+
+#### GeoJSONの検証と確認
+
+**1. オンラインビューア:**
+```bash
+# GeoJSON.ioで確認
+# https://geojson.io/ にアクセスしてファイルをドラッグ&ドロップ
+```
+
+**2. Pythonで読み込み:**
+```python
+import json
+
+with open('output/graph.geojson', 'r') as f:
+    geojson = json.load(f)
+
+print(f"Type: {geojson['type']}")
+print(f"Features: {len(geojson['features'])}")
+print(f"CRS: {geojson['crs']['properties']['name']}")
+```
+
+**3. QGISで可視化:**
+```
+1. QGISを開く
+2. Layer → Add Layer → Add Vector Layer
+3. graph.geojson を選択
+4. 地図上にグラフが表示される
+```
+
+#### Nav2での使用
+
+Nav2 Route Serverは GeoJSONファイルを読み込んで経路計画に使用します：
+
+**設定ファイル例:**
+```yaml
+route_server:
+  ros__parameters:
+    route_file: "/path/to/graph.geojson"
+    coordinate_system: "EPSG:3857"
+    allow_bidirectional: true
+```
+
+**利点:**
+- ✅ 標準フォーマットでツール対応が広い
+- ✅ Web地図サービスと統合可能
+- ✅ JSONなのでパース・編集が容易
+- ✅ 双方向エッジで効率的な経路計画
 
 ### ステップ2: SWAGGERライブラリのインストール
 
