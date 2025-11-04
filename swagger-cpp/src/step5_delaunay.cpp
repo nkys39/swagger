@@ -79,14 +79,14 @@ void DelaunayShortcuts::add_delaunay_shortcuts(
     cv::Rect rect(0, 0, step1_data.original_map.cols, step1_data.original_map.rows);
     cv::Subdiv2D subdiv(rect);
 
-    // Create mapping from point to NodeId
-    std::map<cv::Point2f, NodeId> point_to_node;
+    // Create mapping from point to NodeId (using vector since Point2f doesn't have operator<)
+    std::vector<std::pair<cv::Point2f, NodeId>> point_to_node;
 
     // Insert all nodes
     for (const auto& node : nodes) {
         cv::Point2f pt(static_cast<float>(node.second), static_cast<float>(node.first));
         subdiv.insert(pt);
-        point_to_node[pt] = node;
+        point_to_node.push_back({pt, node});
     }
 
     // Get triangles
@@ -121,29 +121,30 @@ void DelaunayShortcuts::add_delaunay_shortcuts(
         bool all_found = true;
 
         for (int i = 0; i < 3; ++i) {
-            // Round to nearest integer coordinates
-            cv::Point2f rounded(std::round(pt[i].x), std::round(pt[i].y));
+            // Find nearest node with tolerance
+            bool found = false;
+            float best_dist_sq = 2.0f;  // Tolerance of sqrt(2)
 
-            auto it = point_to_node.find(rounded);
-            if (it != point_to_node.end()) {
-                node_ids[i] = it->second;
-            } else {
-                // Try to find nearest node
-                bool found = false;
-                for (const auto& [key, value] : point_to_node) {
-                    float dx = key.x - pt[i].x;
-                    float dy = key.y - pt[i].y;
-                    if (dx * dx + dy * dy < 2.0f) {  // Tolerance of sqrt(2)
-                        node_ids[i] = value;
-                        found = true;
+            for (const auto& [key, value] : point_to_node) {
+                float dx = key.x - pt[i].x;
+                float dy = key.y - pt[i].y;
+                float dist_sq = dx * dx + dy * dy;
+
+                if (dist_sq < best_dist_sq) {
+                    node_ids[i] = value;
+                    best_dist_sq = dist_sq;
+                    found = true;
+
+                    // If exact match, stop searching
+                    if (dist_sq < 0.01f) {
                         break;
                     }
                 }
+            }
 
-                if (!found) {
-                    all_found = false;
-                    break;
-                }
+            if (!found) {
+                all_found = false;
+                break;
             }
         }
 
