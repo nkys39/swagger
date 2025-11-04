@@ -1,0 +1,18 @@
+[project]
+name = "swagger-minimal"
+version = "0.1.0"
+description = "Minimal SWAGGER implementation (Step1: Preprocess + Step4: Free Space Sampling)"
+requires-python = ">=3.10,<4.0"
+license = "Apache-2.0"
+dependencies = [
+    "opencv-python>=4.8.0",
+    "numpy>=1.24.0,<2.0.0",
+    "networkx>=3.1",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["process_map", "create_sample_map"]

@@ -1,0 +1,1170 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  <key id="d2" for="edge" attr.name="edge_type" attr.type="string" />
+  <key id="d1" for="edge" attr.name="weight" attr.type="float" />
+  <key id="d0" for="node" attr.name="node_type" attr.type="string" />
+  <graph edgedefault="undirected">
+    <node id="(235, 295)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(235, 350)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(235, 405)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(236, 407)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(238, 410)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(240, 412)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(243, 414)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(245, 415)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(298, 415)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(351, 415)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(405, 415)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(407, 414)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(410, 412)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(412, 410)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(414, 407)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(415, 405)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(415, 350)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(415, 295)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(414, 293)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(412, 290)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(410, 288)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(405, 285)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(406, 283)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(408, 279)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(412, 272)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(413, 269)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(414, 264)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(415, 255)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(415, 245)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(414, 236)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(413, 231)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(412, 228)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(406, 216)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(404, 213)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(402, 210)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(390, 198)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(387, 196)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(384, 194)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(372, 188)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(369, 187)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(364, 186)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(355, 185)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(345, 185)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(336, 186)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(331, 187)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(328, 188)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(316, 194)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(313, 196)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(310, 198)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(298, 210)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(296, 213)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(294, 216)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(288, 228)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(287, 231)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(286, 236)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(285, 245)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(285, 255)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(286, 264)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(287, 269)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(288, 272)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(295, 285)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(245, 285)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(243, 286)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(240, 288)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(238, 290)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(236, 293)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(185, 95)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(185, 155)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(186, 157)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(188, 160)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(190, 162)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(193, 164)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(195, 165)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(247, 165)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(300, 165)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(352, 165)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(405, 165)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(407, 164)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(410, 162)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(412, 160)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(414, 157)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(415, 155)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(415, 95)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(414, 93)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(412, 90)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(410, 88)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(407, 86)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(405, 85)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(352, 85)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(300, 85)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(247, 85)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(195, 85)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(193, 86)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(190, 88)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(188, 90)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(186, 93)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(85, 95)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(85, 146)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(85, 198)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(85, 250)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(85, 301)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(85, 353)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(85, 405)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(86, 407)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(88, 410)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(90, 412)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(93, 414)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(95, 415)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(155, 415)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(157, 414)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(160, 412)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(162, 410)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(164, 407)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(165, 405)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(165, 353)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(165, 301)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(165, 250)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(165, 198)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(165, 146)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(165, 95)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(164, 93)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(162, 90)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(160, 88)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(157, 86)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(155, 85)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(95, 85)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(93, 86)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(90, 88)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(88, 90)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(86, 93)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(14, 14)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(66, 14)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(118, 14)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(171, 14)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(223, 14)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(275, 14)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(328, 14)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(380, 14)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(432, 14)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(485, 14)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(485, 66)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(485, 118)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(485, 171)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(485, 223)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(485, 275)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(485, 328)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(485, 380)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(485, 432)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(485, 485)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(432, 485)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(380, 485)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(328, 485)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(275, 485)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(223, 485)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(171, 485)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(118, 485)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(66, 485)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(14, 485)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(14, 432)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(14, 380)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(14, 328)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(14, 275)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(14, 223)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(14, 171)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(14, 118)">
+      <data key="d0">boundary</data>
+    </node>
+    <node id="(14, 66)">
+      <data key="d0">boundary</data>
+    </node>
+    <edge source="(235, 295)" target="(235, 350)">
+      <data key="d1">55.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(235, 295)" target="(236, 293)">
+      <data key="d1">2.23606797749979</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(235, 350)" target="(235, 405)">
+      <data key="d1">55.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(235, 405)" target="(236, 407)">
+      <data key="d1">2.23606797749979</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(236, 407)" target="(238, 410)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(238, 410)" target="(240, 412)">
+      <data key="d1">2.8284271247461903</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(240, 412)" target="(243, 414)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(243, 414)" target="(245, 415)">
+      <data key="d1">2.23606797749979</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(245, 415)" target="(298, 415)">
+      <data key="d1">53.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(298, 415)" target="(351, 415)">
+      <data key="d1">53.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(351, 415)" target="(405, 415)">
+      <data key="d1">54.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(405, 415)" target="(407, 414)">
+      <data key="d1">2.23606797749979</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(407, 414)" target="(410, 412)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(410, 412)" target="(412, 410)">
+      <data key="d1">2.8284271247461903</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(412, 410)" target="(414, 407)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(414, 407)" target="(415, 405)">
+      <data key="d1">2.23606797749979</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(415, 405)" target="(415, 350)">
+      <data key="d1">55.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(415, 350)" target="(415, 295)">
+      <data key="d1">55.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(415, 295)" target="(414, 293)">
+      <data key="d1">2.23606797749979</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(414, 293)" target="(412, 290)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(412, 290)" target="(410, 288)">
+      <data key="d1">2.8284271247461903</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(410, 288)" target="(405, 285)">
+      <data key="d1">5.830951894845301</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(405, 285)" target="(406, 283)">
+      <data key="d1">2.23606797749979</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(406, 283)" target="(408, 279)">
+      <data key="d1">4.47213595499958</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(408, 279)" target="(412, 272)">
+      <data key="d1">8.06225774829855</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(412, 272)" target="(413, 269)">
+      <data key="d1">3.1622776601683795</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(413, 269)" target="(414, 264)">
+      <data key="d1">5.0990195135927845</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(414, 264)" target="(415, 255)">
+      <data key="d1">9.055385138137417</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(415, 255)" target="(415, 245)">
+      <data key="d1">10.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(415, 245)" target="(414, 236)">
+      <data key="d1">9.055385138137417</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(414, 236)" target="(413, 231)">
+      <data key="d1">5.0990195135927845</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(413, 231)" target="(412, 228)">
+      <data key="d1">3.1622776601683795</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(412, 228)" target="(406, 216)">
+      <data key="d1">13.416407864998739</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(406, 216)" target="(404, 213)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(404, 213)" target="(402, 210)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(402, 210)" target="(390, 198)">
+      <data key="d1">16.97056274847714</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(390, 198)" target="(387, 196)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(387, 196)" target="(384, 194)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(384, 194)" target="(372, 188)">
+      <data key="d1">13.416407864998739</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(372, 188)" target="(369, 187)">
+      <data key="d1">3.1622776601683795</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(369, 187)" target="(364, 186)">
+      <data key="d1">5.0990195135927845</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(364, 186)" target="(355, 185)">
+      <data key="d1">9.055385138137417</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(355, 185)" target="(345, 185)">
+      <data key="d1">10.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(345, 185)" target="(336, 186)">
+      <data key="d1">9.055385138137417</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(336, 186)" target="(331, 187)">
+      <data key="d1">5.0990195135927845</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(331, 187)" target="(328, 188)">
+      <data key="d1">3.1622776601683795</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(328, 188)" target="(316, 194)">
+      <data key="d1">13.416407864998739</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(316, 194)" target="(313, 196)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(313, 196)" target="(310, 198)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(310, 198)" target="(298, 210)">
+      <data key="d1">16.97056274847714</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(298, 210)" target="(296, 213)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(296, 213)" target="(294, 216)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(294, 216)" target="(288, 228)">
+      <data key="d1">13.416407864998739</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(288, 228)" target="(287, 231)">
+      <data key="d1">3.1622776601683795</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(287, 231)" target="(286, 236)">
+      <data key="d1">5.0990195135927845</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(286, 236)" target="(285, 245)">
+      <data key="d1">9.055385138137417</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(285, 245)" target="(285, 255)">
+      <data key="d1">10.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(285, 255)" target="(286, 264)">
+      <data key="d1">9.055385138137417</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(286, 264)" target="(287, 269)">
+      <data key="d1">5.0990195135927845</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(287, 269)" target="(288, 272)">
+      <data key="d1">3.1622776601683795</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(288, 272)" target="(295, 285)">
+      <data key="d1">14.7648230602334</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(295, 285)" target="(245, 285)">
+      <data key="d1">50.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(245, 285)" target="(243, 286)">
+      <data key="d1">2.23606797749979</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(243, 286)" target="(240, 288)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(240, 288)" target="(238, 290)">
+      <data key="d1">2.8284271247461903</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(238, 290)" target="(236, 293)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(185, 95)" target="(185, 155)">
+      <data key="d1">60.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(185, 95)" target="(186, 93)">
+      <data key="d1">2.23606797749979</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(185, 155)" target="(186, 157)">
+      <data key="d1">2.23606797749979</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(186, 157)" target="(188, 160)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(188, 160)" target="(190, 162)">
+      <data key="d1">2.8284271247461903</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(190, 162)" target="(193, 164)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(193, 164)" target="(195, 165)">
+      <data key="d1">2.23606797749979</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(195, 165)" target="(247, 165)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(247, 165)" target="(300, 165)">
+      <data key="d1">53.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(300, 165)" target="(352, 165)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(352, 165)" target="(405, 165)">
+      <data key="d1">53.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(405, 165)" target="(407, 164)">
+      <data key="d1">2.23606797749979</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(407, 164)" target="(410, 162)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(410, 162)" target="(412, 160)">
+      <data key="d1">2.8284271247461903</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(412, 160)" target="(414, 157)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(414, 157)" target="(415, 155)">
+      <data key="d1">2.23606797749979</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(415, 155)" target="(415, 95)">
+      <data key="d1">60.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(415, 95)" target="(414, 93)">
+      <data key="d1">2.23606797749979</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(414, 93)" target="(412, 90)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(412, 90)" target="(410, 88)">
+      <data key="d1">2.8284271247461903</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(410, 88)" target="(407, 86)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(407, 86)" target="(405, 85)">
+      <data key="d1">2.23606797749979</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(405, 85)" target="(352, 85)">
+      <data key="d1">53.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(352, 85)" target="(300, 85)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(300, 85)" target="(247, 85)">
+      <data key="d1">53.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(247, 85)" target="(195, 85)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(195, 85)" target="(193, 86)">
+      <data key="d1">2.23606797749979</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(193, 86)" target="(190, 88)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(190, 88)" target="(188, 90)">
+      <data key="d1">2.8284271247461903</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(188, 90)" target="(186, 93)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(85, 95)" target="(85, 146)">
+      <data key="d1">51.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(85, 95)" target="(86, 93)">
+      <data key="d1">2.23606797749979</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(85, 146)" target="(85, 198)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(85, 198)" target="(85, 250)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(85, 250)" target="(85, 301)">
+      <data key="d1">51.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(85, 301)" target="(85, 353)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(85, 353)" target="(85, 405)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(85, 405)" target="(86, 407)">
+      <data key="d1">2.23606797749979</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(86, 407)" target="(88, 410)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(88, 410)" target="(90, 412)">
+      <data key="d1">2.8284271247461903</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(90, 412)" target="(93, 414)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(93, 414)" target="(95, 415)">
+      <data key="d1">2.23606797749979</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(95, 415)" target="(155, 415)">
+      <data key="d1">60.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(155, 415)" target="(157, 414)">
+      <data key="d1">2.23606797749979</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(157, 414)" target="(160, 412)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(160, 412)" target="(162, 410)">
+      <data key="d1">2.8284271247461903</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(162, 410)" target="(164, 407)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(164, 407)" target="(165, 405)">
+      <data key="d1">2.23606797749979</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(165, 405)" target="(165, 353)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(165, 353)" target="(165, 301)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(165, 301)" target="(165, 250)">
+      <data key="d1">51.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(165, 250)" target="(165, 198)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(165, 198)" target="(165, 146)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(165, 146)" target="(165, 95)">
+      <data key="d1">51.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(165, 95)" target="(164, 93)">
+      <data key="d1">2.23606797749979</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(164, 93)" target="(162, 90)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(162, 90)" target="(160, 88)">
+      <data key="d1">2.8284271247461903</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(160, 88)" target="(157, 86)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(157, 86)" target="(155, 85)">
+      <data key="d1">2.23606797749979</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(155, 85)" target="(95, 85)">
+      <data key="d1">60.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(95, 85)" target="(93, 86)">
+      <data key="d1">2.23606797749979</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(93, 86)" target="(90, 88)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(90, 88)" target="(88, 90)">
+      <data key="d1">2.8284271247461903</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(88, 90)" target="(86, 93)">
+      <data key="d1">3.605551275463989</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(14, 14)" target="(66, 14)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(14, 14)" target="(14, 66)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(66, 14)" target="(118, 14)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(118, 14)" target="(171, 14)">
+      <data key="d1">53.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(171, 14)" target="(223, 14)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(223, 14)" target="(275, 14)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(275, 14)" target="(328, 14)">
+      <data key="d1">53.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(328, 14)" target="(380, 14)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(380, 14)" target="(432, 14)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(432, 14)" target="(485, 14)">
+      <data key="d1">53.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(485, 14)" target="(485, 66)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(485, 66)" target="(485, 118)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(485, 118)" target="(485, 171)">
+      <data key="d1">53.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(485, 171)" target="(485, 223)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(485, 223)" target="(485, 275)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(485, 275)" target="(485, 328)">
+      <data key="d1">53.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(485, 328)" target="(485, 380)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(485, 380)" target="(485, 432)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(485, 432)" target="(485, 485)">
+      <data key="d1">53.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(485, 485)" target="(432, 485)">
+      <data key="d1">53.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(432, 485)" target="(380, 485)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(380, 485)" target="(328, 485)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(328, 485)" target="(275, 485)">
+      <data key="d1">53.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(275, 485)" target="(223, 485)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(223, 485)" target="(171, 485)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(171, 485)" target="(118, 485)">
+      <data key="d1">53.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(118, 485)" target="(66, 485)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(66, 485)" target="(14, 485)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(14, 485)" target="(14, 432)">
+      <data key="d1">53.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(14, 432)" target="(14, 380)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(14, 380)" target="(14, 328)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(14, 328)" target="(14, 275)">
+      <data key="d1">53.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(14, 275)" target="(14, 223)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(14, 223)" target="(14, 171)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(14, 171)" target="(14, 118)">
+      <data key="d1">53.0</data>
+      <data key="d2">contour</data>
+    </edge>
+    <edge source="(14, 118)" target="(14, 66)">
+      <data key="d1">52.0</data>
+      <data key="d2">contour</data>
+    </edge>
+  </graph>
+</graphml>
