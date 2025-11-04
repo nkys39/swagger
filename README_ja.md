@@ -17,6 +17,7 @@
 - [GML形式とNav2統合](GML_AND_NAV2_INTEGRATION_ja.md) - 出力形式とROS2統合の詳細
 - [GML可視化ツールガイド](GML_VISUALIZATION_TOOLS_ja.md) - グラフを可視化する各種ツールの使い方
 - [C++でのGML処理](GML_CPP_GUIDE_ja.md) - C++でGMLファイルを読み込み・処理・可視化する方法
+- [グラフデータ形式ガイド](GRAPH_FORMATS_GUIDE_ja.md) - GML、GraphML、DOT、JSON等の形式比較
 - [モジュラー実行ガイド](MODULAR_USAGE.md) - 各ステップを個別に実行する方法
 
 ---
