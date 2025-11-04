@@ -132,6 +132,36 @@ Outputs:
 - `<output_dir>/waypoint_graph.png`: Visualization of the generated graph
 - `<output_dir>/graph.gml`: Graph data in GML format
 
+#### Modular Execution
+
+For more control over the graph generation process, you can run individual algorithm steps separately. This is useful for:
+- Debugging specific steps
+- Experimenting with different parameter combinations
+- Visualizing intermediate results
+- Running only the steps you need
+
+See [MODULAR_USAGE.md](MODULAR_USAGE.md) for detailed instructions on:
+- Running the complete pipeline
+- Running specific steps only
+- Skipping certain steps
+- Visualizing each step's output
+- Parameter tuning for each step
+
+Quick example:
+```bash
+# Run all steps with visualization
+python scripts/run_pipeline.py \
+    --map maps/carter_warehouse_navigation.png \
+    --output output/ \
+    --visualize-all
+
+# Run only skeleton and boundary steps
+python scripts/run_pipeline.py \
+    --map maps/carter_warehouse_navigation.png \
+    --output output/ \
+    --steps 1,2,3,6
+```
+
 ### Evaluation
 
 To evaluate the graph, see the tutorial on [evaluation](docs/evaluation.md).

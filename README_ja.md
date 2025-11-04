@@ -123,6 +123,36 @@ python scripts/generate_graph.py \
 - `waypoint_graph.png`: グラフの可視化画像
 - `graph.gml`: GML形式のグラフデータ
 
+#### モジュラー実行
+
+グラフ生成処理をより細かく制御したい場合、各アルゴリズムステップを個別に実行できます。これは以下の場合に便利です：
+- 特定のステップのデバッグ
+- 異なるパラメータの組み合わせで実験
+- 中間結果の可視化
+- 必要なステップのみを実行
+
+詳細は [MODULAR_USAGE.md](MODULAR_USAGE.md) を参照してください：
+- パイプライン全体の実行
+- 特定のステップのみ実行
+- 一部のステップをスキップ
+- 各ステップの出力を可視化
+- 各ステップのパラメータ調整
+
+クイック例：
+```bash
+# 全ステップを可視化付きで実行
+python scripts/run_pipeline.py \
+    --map maps/carter_warehouse_navigation.png \
+    --output output/ \
+    --visualize-all
+
+# スケルトンと境界のステップのみ実行
+python scripts/run_pipeline.py \
+    --map maps/carter_warehouse_navigation.png \
+    --output output/ \
+    --steps 1,2,3,6
+```
+
 #### Pythonコードから
 
 ```python
