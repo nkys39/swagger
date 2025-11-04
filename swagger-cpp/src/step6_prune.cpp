@@ -86,6 +86,10 @@ size_t GraphPruner::merge_close_nodes(
         bool merged = false;
 
         // Build KD-tree for efficient proximity search
+        if (verbose) {
+            log("  KD-treeを構築中...", verbose);
+        }
+
         cv::Mat node_coords(nodes.size(), 2, CV_32F);
         for (size_t i = 0; i < nodes.size(); ++i) {
             node_coords.at<float>(i, 0) = static_cast<float>(nodes[i].second);  // x (col)
@@ -94,10 +98,26 @@ size_t GraphPruner::merge_close_nodes(
 
         cv::flann::Index kdtree(node_coords, cv::flann::KDTreeIndexParams(1), cvflann::FLANN_DIST_EUCLIDEAN);
 
+        if (verbose) {
+            log("  KD-tree構築完了", verbose);
+        }
+
         // Find close node pairs using KD-tree
         std::set<std::pair<size_t, size_t>> close_pairs;
 
+        if (verbose) {
+            log("  KD-treeで近接ペアを探索中...", verbose);
+        }
+
         for (size_t i = 0; i < nodes.size(); ++i) {
+            if (verbose && i % 100 == 0) {
+                log("  KD-tree探索: " + std::to_string(i) + "/" + std::to_string(nodes.size()) + " ノード", verbose);
+            }
+
+            if (verbose && i < 5) {
+                log("  ノード " + std::to_string(i) + " の近接探索を開始", verbose);
+            }
+
             if (!graph.has_node(nodes[i])) {
                 continue;  // Already removed
             }
@@ -112,6 +132,10 @@ size_t GraphPruner::merge_close_nodes(
 
             kdtree.radiusSearch(query, indices, dists, merge_distance_px * merge_distance_px,
                                INT_MAX, cv::flann::SearchParams(32));
+
+            if (verbose && i < 5) {
+                log("  ノード " + std::to_string(i) + " で " + std::to_string(indices.size()) + " 個の近接ノードを発見", verbose);
+            }
 
             // Record close pairs (excluding self)
             for (size_t k = 0; k < indices.size(); ++k) {
