@@ -3,6 +3,7 @@
 #include <queue>
 #include <limits>
 #include <cmath>
+#include <opencv2/flann.hpp>
 
 namespace swagger {
 
@@ -143,24 +144,47 @@ void FreeSpaceSampler::sample_free_space(
             }
         }
 
-        // Add local maxima as nodes
+        // Add local maxima as nodes using KD-tree for efficient proximity search
         int nodes_added_this_iter = 0;
         double half_threshold = distance_threshold_px / 2.0;
 
-        for (const auto& point : local_maxima) {
-            NodeId candidate(point.y, point.x);
-
-            // Check if there are any nodes within half threshold
-            bool too_close = false;
-            for (const auto& node : graph.nodes()) {
-                double dist = euclidean_distance(candidate, node);
-                if (dist < half_threshold) {
-                    too_close = true;
-                    break;
-                }
+        // Build KD-tree from existing nodes
+        auto existing_nodes = graph.nodes();
+        if (!existing_nodes.empty()) {
+            cv::Mat node_coords(existing_nodes.size(), 2, CV_32F);
+            for (size_t i = 0; i < existing_nodes.size(); ++i) {
+                node_coords.at<float>(i, 0) = static_cast<float>(existing_nodes[i].second);  // x (col)
+                node_coords.at<float>(i, 1) = static_cast<float>(existing_nodes[i].first);   // y (row)
             }
 
-            if (!too_close) {
+            cv::flann::Index kdtree(node_coords, cv::flann::KDTreeIndexParams(1), cvflann::FLANN_DIST_EUCLIDEAN);
+
+            for (const auto& point : local_maxima) {
+                NodeId candidate(point.y, point.x);
+
+                // Query KD-tree for nearest neighbor within half threshold
+                cv::Mat query(1, 2, CV_32F);
+                query.at<float>(0, 0) = static_cast<float>(point.x);
+                query.at<float>(0, 1) = static_cast<float>(point.y);
+
+                std::vector<int> indices(1);
+                std::vector<float> dists(1);
+
+                kdtree.knnSearch(query, indices, dists, 1, cv::flann::SearchParams(32));
+
+                // Check if nearest neighbor is within half threshold
+                bool too_close = (dists[0] < half_threshold * half_threshold);  // squared distance
+
+                if (!too_close) {
+                    graph.add_node(candidate, NodeData("free_space"));
+                    distance_map.at<float>(point.y, point.x) = 0.0f;
+                    nodes_added_this_iter++;
+                }
+            }
+        } else {
+            // No existing nodes, add all local maxima
+            for (const auto& point : local_maxima) {
+                NodeId candidate(point.y, point.x);
                 graph.add_node(candidate, NodeData("free_space"));
                 distance_map.at<float>(point.y, point.x) = 0.0f;
                 nodes_added_this_iter++;

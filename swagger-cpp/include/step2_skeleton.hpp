@@ -6,6 +6,13 @@
 
 namespace swagger {
 
+// Structure to represent a branch/path in the skeleton
+struct SkeletonBranch {
+    std::vector<cv::Point> coordinates;
+    int start_junction_id;  // -1 if starts at endpoint
+    int end_junction_id;    // -1 if ends at endpoint
+};
+
 class SkeletonGraphBuilder {
 public:
     // Build graph from skeleton of inflated map
@@ -27,16 +34,32 @@ private:
 
     static cv::Mat compute_skeleton(const cv::Mat& free_map);
 
-    static std::vector<NodeId> sample_skeleton_points(
+    // Topology analysis methods (similar to skan library)
+    static std::vector<cv::Point> find_junction_points(const cv::Mat& skeleton);
+    static std::vector<cv::Point> find_endpoint_points(const cv::Mat& skeleton);
+    static int count_neighbors(const cv::Mat& skeleton, int y, int x);
+
+    static std::vector<SkeletonBranch> extract_branches(
         const cv::Mat& skeleton,
-        int sample_distance_px
+        const std::vector<cv::Point>& junctions,
+        const std::vector<cv::Point>& endpoints
     );
 
-    static void connect_skeleton_nodes(
-        const std::vector<NodeId>& nodes,
+    static void trace_branch(
+        const cv::Mat& skeleton,
+        cv::Mat& visited,
+        cv::Point start,
+        cv::Point previous,
+        std::vector<cv::Point>& branch_coords,
+        const std::vector<cv::Point>& junctions,
+        const std::vector<cv::Point>& endpoints
+    );
+
+    static void add_branch_to_graph(
         Graph& graph,
-        const cv::Mat& inflated_map,
-        double max_connection_distance
+        const SkeletonBranch& branch,
+        int sample_distance_px,
+        const cv::Mat& inflated_map
     );
 };
 

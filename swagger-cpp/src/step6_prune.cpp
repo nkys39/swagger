@@ -4,6 +4,7 @@
 #include <cmath>
 #include <set>
 #include <vector>
+#include <opencv2/flann.hpp>
 
 namespace swagger {
 
@@ -80,54 +81,83 @@ size_t GraphPruner::merge_close_nodes(
 
         bool merged = false;
 
-        // Find pairs of close nodes
+        // Build KD-tree for efficient proximity search
+        cv::Mat node_coords(nodes.size(), 2, CV_32F);
+        for (size_t i = 0; i < nodes.size(); ++i) {
+            node_coords.at<float>(i, 0) = static_cast<float>(nodes[i].second);  // x (col)
+            node_coords.at<float>(i, 1) = static_cast<float>(nodes[i].first);   // y (row)
+        }
+
+        cv::flann::Index kdtree(node_coords, cv::flann::KDTreeIndexParams(1), cvflann::FLANN_DIST_EUCLIDEAN);
+
+        // Find close node pairs using KD-tree
+        std::set<std::pair<size_t, size_t>> close_pairs;
+
         for (size_t i = 0; i < nodes.size(); ++i) {
             if (!graph.has_node(nodes[i])) {
                 continue;  // Already removed
             }
 
-            for (size_t j = i + 1; j < nodes.size(); ++j) {
-                if (!graph.has_node(nodes[j])) {
-                    continue;  // Already removed
+            // Query for all neighbors within merge distance
+            cv::Mat query(1, 2, CV_32F);
+            query.at<float>(0, 0) = static_cast<float>(nodes[i].second);
+            query.at<float>(0, 1) = static_cast<float>(nodes[i].first);
+
+            std::vector<int> indices;
+            std::vector<float> dists;
+
+            kdtree.radiusSearch(query, indices, dists, merge_distance_px * merge_distance_px,
+                               INT_MAX, cv::flann::SearchParams(32));
+
+            // Record close pairs (excluding self)
+            for (size_t k = 0; k < indices.size(); ++k) {
+                size_t j = static_cast<size_t>(indices[k]);
+                if (i < j) {  // Avoid duplicates
+                    close_pairs.insert({i, j});
                 }
+            }
+        }
 
-                const NodeId& n1 = nodes[i];
-                const NodeId& n2 = nodes[j];
+        // Process close pairs
+        for (const auto& pair : close_pairs) {
+            size_t i = pair.first;
+            size_t j = pair.second;
 
-                double dist = euclidean_distance(n1, n2);
-                if (dist >= merge_distance_px) {
-                    continue;
+            if (!graph.has_node(nodes[i]) || !graph.has_node(nodes[j])) {
+                continue;  // Already removed
+            }
+
+            const NodeId& n1 = nodes[i];
+            const NodeId& n2 = nodes[j];
+
+            // Check if n2's neighbors can connect to n1
+            auto n2_neighbors = graph.neighbors(n2);
+            bool can_merge = true;
+
+            for (const auto& neighbor : n2_neighbors) {
+                if (neighbor == n1) continue;
+
+                cv::Point p1(n1.second, n1.first);
+                cv::Point p2(neighbor.second, neighbor.first);
+
+                if (check_line_collision(p1, p2, inflated_map)) {
+                    can_merge = false;
+                    break;
                 }
+            }
 
-                // Check if n2's neighbors can connect to n1
-                auto n2_neighbors = graph.neighbors(n2);
-                bool can_merge = true;
-
+            if (can_merge) {
+                // Transfer all edges from n2 to n1
                 for (const auto& neighbor : n2_neighbors) {
-                    if (neighbor == n1) continue;
-
-                    cv::Point p1(n1.second, n1.first);
-                    cv::Point p2(neighbor.second, neighbor.first);
-
-                    if (check_line_collision(p1, p2, inflated_map)) {
-                        can_merge = false;
-                        break;
+                    if (neighbor != n1) {
+                        double edge_dist = euclidean_distance(n1, neighbor);
+                        graph.add_edge(n1, neighbor, EdgeData(edge_dist, "merge"));
                     }
                 }
 
-                if (can_merge) {
-                    // Transfer all edges from n2 to n1
-                    for (const auto& neighbor : n2_neighbors) {
-                        if (neighbor != n1) {
-                            double edge_dist = euclidean_distance(n1, neighbor);
-                            graph.add_edge(n1, neighbor, EdgeData(edge_dist, "merge"));
-                        }
-                    }
-
-                    // Remove n2
-                    graph.remove_node(n2);
-                    merged = true;
-                }
+                // Remove n2
+                graph.remove_node(n2);
+                merged = true;
             }
         }
 
