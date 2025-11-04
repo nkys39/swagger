@@ -263,7 +263,7 @@ def visualize_graph(
     """Visualize a graph on the original map.
 
     Args:
-        graph: NetworkX graph with 'pixel' attributes
+        graph: NetworkX graph (with or without 'pixel' attributes)
         original_map: Original occupancy grid
         output_path: Path to save visualization
         edge_color: RGB color for edges
@@ -272,11 +272,19 @@ def visualize_graph(
     # Convert to BGR for visualization
     map_vis = cv2.cvtColor(original_map, cv2.COLOR_GRAY2BGR)
 
+    # Check if graph has 'pixel' attributes (world coordinate graph) or uses pixel IDs directly
+    has_pixel_attr = len(graph.nodes()) > 0 and "pixel" in next(iter(graph.nodes(data=True)))[1]
+
     # Draw edges
     lines = []
     for src, dst in graph.edges():
-        src_pixel = graph.nodes[src]["pixel"]
-        dst_pixel = graph.nodes[dst]["pixel"]
+        if has_pixel_attr:
+            src_pixel = graph.nodes[src]["pixel"]
+            dst_pixel = graph.nodes[dst]["pixel"]
+        else:
+            # Node IDs are pixel coordinates (row, col)
+            src_pixel = src
+            dst_pixel = dst
         lines.append([[src_pixel[1], src_pixel[0]], [dst_pixel[1], dst_pixel[0]]])
 
     if lines:
@@ -285,9 +293,14 @@ def visualize_graph(
 
     # Draw nodes
     node_radius = 2
-    for _, pixel in graph.nodes(data="pixel"):
-        y, x = pixel
-        cv2.circle(map_vis, (x, y), node_radius, node_color, -1)
+    if has_pixel_attr:
+        for _, pixel in graph.nodes(data="pixel"):
+            y, x = pixel
+            cv2.circle(map_vis, (x, y), node_radius, node_color, -1)
+    else:
+        for node in graph.nodes():
+            y, x = node
+            cv2.circle(map_vis, (x, y), node_radius, node_color, -1)
 
     # Save
     os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
