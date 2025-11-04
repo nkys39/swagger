@@ -255,8 +255,16 @@ def main():
     logger.info("Step 6: Graph Pruning and Finalization")
     logger.info("=" * 60)
 
-    # Load previous step data
-    step_data = load_step_data(args.input, "step5")
+    # Load previous step data (try step5, step4, step3, step2, then step1)
+    for step_name in ["step5", "step4", "step3", "step2", "step1"]:
+        try:
+            step_data = load_step_data(args.input, step_name)
+            logger.info(f"Loaded data from {step_name}")
+            break
+        except FileNotFoundError:
+            continue
+    else:
+        raise FileNotFoundError("No previous step data found")
 
     # Get graph
     if step_data.graph is None or len(step_data.graph.nodes()) == 0:

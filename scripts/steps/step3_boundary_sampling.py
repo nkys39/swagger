@@ -178,8 +178,13 @@ def main():
     logger.info("Step 3: Boundary Sampling")
     logger.info("=" * 60)
 
-    # Load previous step data
-    step_data = load_step_data(args.input, "step2")
+    # Load previous step data (try step2, fall back to step1)
+    try:
+        step_data = load_step_data(args.input, "step2")
+        logger.info("Loaded data from step2")
+    except FileNotFoundError:
+        logger.info("Step2 data not found, loading from step1")
+        step_data = load_step_data(args.input, "step1")
 
     # Get graph (create new if doesn't exist)
     graph = step_data.graph if step_data.graph is not None else nx.Graph()
