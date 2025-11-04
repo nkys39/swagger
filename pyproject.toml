@@ -3,7 +3,7 @@ name = "swagger"
 version = "0.1.0"
 description = "SWAGGER: Sparse WAypoint Graph Generation for Efficient Routing"
 authors = []
-license = {text = "Apache-2.0"}
+license = "Apache-2.0"
 readme = "README.md"
 requires-python = ">=3.10,<4.0"
 dependencies = [
@@ -32,3 +32,6 @@ dependencies = [
 [build-system]
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["swagger"]
