@@ -2,6 +2,9 @@
 #include <stdexcept>
 #include <algorithm>
 #include <queue>
+#include <iostream>
+#include <iomanip>
+#include <map>
 
 namespace swagger {
 
@@ -200,6 +203,65 @@ Graph Graph::get_subgraph(const std::set<NodeId>& nodes_subset) const {
     }
 
     return subgraph;
+}
+
+void Graph::print_statistics(const std::string& step_name) const {
+    std::cout << "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" << std::endl;
+    std::cout << "📊 " << step_name << " 詳細統計" << std::endl;
+    std::cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" << std::endl;
+
+    // Node statistics
+    std::cout << "ノード数: " << num_nodes() << std::endl;
+
+    // Count nodes by type
+    std::map<std::string, int> node_type_counts;
+    for (const auto& [node_id, node_data] : nodes_) {
+        node_type_counts[node_data.node_type]++;
+    }
+
+    if (!node_type_counts.empty()) {
+        std::cout << "  ノードタイプ別:" << std::endl;
+        for (const auto& [type, count] : node_type_counts) {
+            std::cout << "    - " << type << ": " << count << std::endl;
+        }
+    }
+
+    // Edge statistics
+    std::cout << "エッジ数: " << num_edges() << std::endl;
+
+    // Count edges by type
+    std::map<std::string, int> edge_type_counts;
+    double total_length = 0.0;
+    std::map<std::string, double> edge_type_lengths;
+
+    for (const auto& [edge, edge_data] : edges_) {
+        edge_type_counts[edge_data.edge_type]++;
+        edge_type_lengths[edge_data.edge_type] += edge_data.weight;
+        total_length += edge_data.weight;
+    }
+
+    if (!edge_type_counts.empty()) {
+        std::cout << "  エッジタイプ別:" << std::endl;
+        for (const auto& [type, count] : edge_type_counts) {
+            double avg_length = edge_type_lengths[type] / count;
+            std::cout << "    - " << type << ": " << count << " 個 (平均長: "
+                     << std::fixed << std::setprecision(2) << avg_length << " px)" << std::endl;
+        }
+    }
+
+    std::cout << "  総エッジ長: " << std::fixed << std::setprecision(2) << total_length << " px" << std::endl;
+
+    // Sample a few nodes (first 3)
+    std::cout << "\nサンプルノード (最初の3個):" << std::endl;
+    int count = 0;
+    for (const auto& node : nodes()) {
+        if (count >= 3) break;
+        std::cout << "  ノード[" << count << "]: (" << node.first << ", " << node.second
+                 << ") - " << get_node_data(node).node_type << std::endl;
+        count++;
+    }
+
+    std::cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n" << std::endl;
 }
 
 } // namespace swagger

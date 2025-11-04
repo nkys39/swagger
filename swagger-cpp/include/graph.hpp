@@ -95,6 +95,9 @@ public:
     // Get subgraph
     Graph get_subgraph(const std::set<NodeId>& nodes) const;
 
+    // Print detailed statistics
+    void print_statistics(const std::string& step_name) const;
+
 private:
     std::map<NodeId, NodeData> nodes_;
     std::set<std::pair<NodeId, NodeId>> edges_set_;  // For fast lookup

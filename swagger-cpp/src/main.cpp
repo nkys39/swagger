@@ -251,6 +251,9 @@ int main(int argc, char* argv[]) {
                 config.skeleton_sample_distance,
                 config.verbose
             );
+            if (config.verbose) {
+                graph.print_statistics("Step 2後");
+            }
         }
 
         // Step 3: Boundary sampling (default: enabled)
@@ -262,6 +265,9 @@ int main(int argc, char* argv[]) {
                 config.boundary_sample_distance,
                 config.verbose
             );
+            if (config.verbose) {
+                graph.print_statistics("Step 3後");
+            }
         }
 
         // Step 4: Free space sampling (optional)
@@ -272,6 +278,9 @@ int main(int argc, char* argv[]) {
                 config.free_space_threshold,
                 config.verbose
             );
+            if (config.verbose) {
+                graph.print_statistics("Step 4後");
+            }
         }
 
         // Step 5: Delaunay shortcuts (optional)
@@ -281,6 +290,9 @@ int main(int argc, char* argv[]) {
                 step1_data,
                 config.verbose
             );
+            if (config.verbose) {
+                graph.print_statistics("Step 5後");
+            }
         }
 
         // Step 6: Graph pruning (optional)
@@ -295,6 +307,10 @@ int main(int argc, char* argv[]) {
 
             // Convert to world coordinates
             swagger::GraphPruner::to_world_coordinates(graph, step1_data);
+
+            if (config.verbose) {
+                graph.print_statistics("Step 6後（最終）");
+            }
         }
 
         // Save results
