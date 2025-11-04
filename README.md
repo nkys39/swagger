@@ -27,6 +27,7 @@ See [algorithm overview](docs/algorithm.md) for an introduction of the method.
   - [Integration examples](integration/README.md)
   - [GML Format and Nav2 Integration](GML_AND_NAV2_INTEGRATION_ja.md) - Output format and ROS2 integration (Japanese)
   - [GML Visualization Tools Guide](GML_VISUALIZATION_TOOLS_ja.md) - Tools and methods to visualize graphs (Japanese)
+  - [GML Processing in C++](GML_CPP_GUIDE_ja.md) - Load, process, and visualize GML files in C++ (Japanese)
 - [Development](#development)
   - [Testing](#testing)
   - [Linting and Formatting](#linting-and-formatting)
