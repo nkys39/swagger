@@ -24,20 +24,20 @@ void print_usage(const char* program_name) {
     std::cout << "  --save-graphml            GraphML形式で保存\n";
     std::cout << "  --quiet                   ログ出力を抑制\n";
     std::cout << "  --help                    このヘルプを表示\n\n";
-    std::cout << "Step 2: スケルトングラフ:\n";
-    std::cout << "  --use-skeleton            スケルトングラフを生成（実装中）\n";
+    std::cout << "ステップ制御（デフォルト: 全て有効）:\n";
+    std::cout << "  --use-skeleton            Step2: スケルトングラフを生成\n";
+    std::cout << "  --use-boundary            Step3: 境界サンプリングを有効化\n";
+    std::cout << "  --use-free-space          Step4: フリースペースサンプリングを有効化\n";
+    std::cout << "  --use-delaunay            Step5: Delaunayショートカットを追加\n";
+    std::cout << "  --prune                   Step6: グラフを刈り込む\n\n";
+    std::cout << "Step 2 パラメータ:\n";
     std::cout << "  --skeleton-sample-distance <値>  サンプリング距離（m、デフォルト: 1.5）\n\n";
-    std::cout << "Step 3: 境界サンプリング:\n";
-    std::cout << "  --use-boundary            境界サンプリングを有効化（デフォルト: 有効）\n";
+    std::cout << "Step 3 パラメータ:\n";
     std::cout << "  --boundary-inflation-factor <値>  境界膨張係数（デフォルト: 1.5）\n";
     std::cout << "  --boundary-sample-distance <値>   サンプリング距離（m、デフォルト: 2.5）\n\n";
-    std::cout << "Step 4: フリースペースサンプリング:\n";
-    std::cout << "  --use-free-space          フリースペースサンプリングを有効化（実装中）\n";
+    std::cout << "Step 4 パラメータ:\n";
     std::cout << "  --free-space-threshold <値>  距離閾値（m、デフォルト: 1.5）\n\n";
-    std::cout << "Step 5: Delaunayショートカット:\n";
-    std::cout << "  --use-delaunay            Delaunayショートカットを追加（実装中）\n\n";
-    std::cout << "Step 6: グラフ刈り込み:\n";
-    std::cout << "  --prune                   グラフを刈り込む（実装中）\n";
+    std::cout << "Step 6 パラメータ:\n";
     std::cout << "  --merge-distance <値>     ノード統合距離（m、デフォルト: 0.25）\n";
     std::cout << "  --min-subgraph-length <値> 最小部分グラフ長（m、デフォルト: 0.25）\n";
 }
@@ -50,23 +50,23 @@ struct Config {
     int occupancy_threshold = 127;
 
     // Step 2: Skeleton
-    bool use_skeleton = false;
+    bool use_skeleton = true;  // Default: enabled
     double skeleton_sample_distance = 1.5;
 
     // Step 3: Boundary
-    bool use_boundary = true;
+    bool use_boundary = true;  // Default: enabled
     double boundary_inflation_factor = 1.5;
     double boundary_sample_distance = 2.5;
 
     // Step 4: Free space
-    bool use_free_space = false;
+    bool use_free_space = true;  // Default: enabled
     double free_space_threshold = 1.5;
 
     // Step 5: Delaunay
-    bool use_delaunay = false;
+    bool use_delaunay = true;  // Default: enabled
 
     // Step 6: Pruning
-    bool prune = false;
+    bool prune = true;  // Default: enabled
     double merge_distance = 0.25;
     double min_subgraph_length = 0.25;
 
