@@ -20,10 +20,13 @@ import networkx as nx
 import numpy as np
 from scipy.spatial import cKDTree
 
-# Add parent directory to path
+# Add steps directory to path
+sys.path.insert(0, str(Path(__file__).parent))
+
+# Add project root to path for swagger imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from scripts.steps.common import (
+from common import (
     create_step_parser,
     get_logger,
     load_step_data,

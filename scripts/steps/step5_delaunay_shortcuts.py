@@ -19,10 +19,10 @@ import networkx as nx
 import numpy as np
 from scipy.spatial import Delaunay
 
-# Add parent directory to path
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+# Add steps directory to path
+sys.path.insert(0, str(Path(__file__).parent))
 
-from scripts.steps.common import (
+from common import (
     create_step_parser,
     get_logger,
     load_step_data,

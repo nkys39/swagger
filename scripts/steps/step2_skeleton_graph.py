@@ -20,10 +20,10 @@ import numpy as np
 import skan
 from skimage.morphology import skeletonize
 
-# Add parent directory to path
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+# Add steps directory to path
+sys.path.insert(0, str(Path(__file__).parent))
 
-from scripts.steps.common import (
+from common import (
     create_step_parser,
     get_logger,
     load_step_data,
