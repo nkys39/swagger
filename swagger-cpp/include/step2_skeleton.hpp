@@ -2,6 +2,7 @@
 
 #include "graph.hpp"
 #include "utils.hpp"
+#include <opencv2/opencv.hpp>
 
 namespace swagger {
 
@@ -16,11 +17,26 @@ public:
     );
 
 private:
-    static cv::Mat compute_skeleton(const cv::Mat& binary_map);
-    static void extract_skeleton_edges(
+    static void log(const std::string& message, bool verbose);
+
+    static bool check_line_collision(
+        const cv::Point& p0,
+        const cv::Point& p1,
+        const cv::Mat& inflated_map
+    );
+
+    static cv::Mat compute_skeleton(const cv::Mat& free_map);
+
+    static std::vector<NodeId> sample_skeleton_points(
         const cv::Mat& skeleton,
-        Graph& graph,
         int sample_distance_px
+    );
+
+    static void connect_skeleton_nodes(
+        const std::vector<NodeId>& nodes,
+        Graph& graph,
+        const cv::Mat& inflated_map,
+        double max_connection_distance
     );
 };
 

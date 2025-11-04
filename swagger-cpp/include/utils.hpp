@@ -2,6 +2,7 @@
 
 #include <opencv2/opencv.hpp>
 #include "graph.hpp"
+#include "step1_preprocess.hpp"
 
 namespace swagger {
 
@@ -29,19 +30,6 @@ struct WaypointGraphConfig {
     bool prune_graph = true;
 };
 
-// Step 1 data structure
-struct Step1Data {
-    cv::Mat original_map;
-    cv::Mat free_map;
-    cv::Mat dist_transform;
-    cv::Mat inflated_map;
-    double resolution;
-    double safety_distance;
-    int occupancy_threshold;
-
-    Step1Data() : resolution(0.05), safety_distance(0.5), occupancy_threshold(127) {}
-};
-
 // Coordinate conversion functions
 inline cv::Point node_to_point(const NodeId& node) {
     return cv::Point(node.second, node.first);
@@ -51,13 +39,8 @@ inline NodeId point_to_node(const cv::Point& point) {
     return NodeId(point.y, point.x);
 }
 
-// World coordinate conversion
-struct WorldCoord {
-    double x, y, z;
-    WorldCoord() : x(0), y(0), z(0) {}
-    WorldCoord(double x_, double y_, double z_ = 0.0) : x(x_), y(y_), z(z_) {}
-};
-
+// World coordinate conversion functions
+// Note: WorldCoord is defined in graph.hpp
 WorldCoord pixel_to_world(
     const NodeId& pixel,
     double resolution,

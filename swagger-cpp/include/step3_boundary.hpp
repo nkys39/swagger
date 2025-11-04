@@ -1,7 +1,7 @@
 #pragma once
 
 #include "graph.hpp"
-#include "map_processor.hpp"
+#include "step1_preprocess.hpp"
 #include <opencv2/opencv.hpp>
 #include <vector>
 
