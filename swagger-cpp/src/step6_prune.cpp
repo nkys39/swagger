@@ -79,6 +79,10 @@ size_t GraphPruner::merge_close_nodes(
             break;
         }
 
+        if (verbose) {
+            log("統合反復 " + std::to_string(iteration) + ": " + std::to_string(nodes.size()) + "個のノードを処理中...", verbose);
+        }
+
         bool merged = false;
 
         // Build KD-tree for efficient proximity search
@@ -118,8 +122,18 @@ size_t GraphPruner::merge_close_nodes(
             }
         }
 
+        if (verbose) {
+            log("  見つかった近接ペア数: " + std::to_string(close_pairs.size()), verbose);
+        }
+
         // Process close pairs
+        size_t pair_count = 0;
         for (const auto& pair : close_pairs) {
+            pair_count++;
+            if (verbose && pair_count % 100 == 0) {
+                log("  処理中: " + std::to_string(pair_count) + "/" + std::to_string(close_pairs.size()) + " ペア", verbose);
+            }
+
             size_t i = pair.first;
             size_t j = pair.second;
 
@@ -161,13 +175,13 @@ size_t GraphPruner::merge_close_nodes(
             }
         }
 
-        if (!merged) {
-            break;
+        if (verbose) {
+            log("  反復 " + std::to_string(iteration) + " 完了: " +
+                std::to_string(initial_num_nodes - graph.num_nodes()) + "個のノードを削除", verbose);
         }
 
-        if (verbose && iteration % 10 == 0) {
-            log("統合反復 " + std::to_string(iteration) + ": " +
-                std::to_string(initial_num_nodes - graph.num_nodes()) + "個のノードを削除", verbose);
+        if (!merged) {
+            break;
         }
     }
 
