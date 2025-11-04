@@ -14,6 +14,8 @@
 - [グラフ評価基準](#グラフ評価基準)
 - [Git LFSについて](#git-lfsについて)
 - [CPU版について](#cpu版について)
+- [GML形式とNav2統合](GML_AND_NAV2_INTEGRATION_ja.md) - 出力形式とROS2統合の詳細
+- [モジュラー実行ガイド](MODULAR_USAGE.md) - 各ステップを個別に実行する方法
 
 ---
 

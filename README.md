@@ -20,10 +20,12 @@ See [algorithm overview](docs/algorithm.md) for an introduction of the method.
 - [Usage](#usage)
   - [Data Prepration](#data-preparation)
   - [Command Line Interface](#command-line-interface)
+  - [Modular Execution](MODULAR_USAGE.md) - Run algorithm steps individually
   - [Evaluation](#evaluation)
   - [REST API](#rest-api-service)
   - [Tutorial](#tutorial)
   - [Integration examples](integration/README.md)
+  - [GML Format and Nav2 Integration](GML_AND_NAV2_INTEGRATION_ja.md) - Output format and ROS2 integration (Japanese)
 - [Development](#development)
   - [Testing](#testing)
   - [Linting and Formatting](#linting-and-formatting)
