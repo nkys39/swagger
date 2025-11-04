@@ -127,21 +127,22 @@ size_t GraphPruner::merge_close_nodes(
             query.at<float>(0, 0) = static_cast<float>(nodes[i].second);
             query.at<float>(0, 1) = static_cast<float>(nodes[i].first);
 
-            std::vector<int> indices;
-            std::vector<float> dists;
+            cv::Mat indices, dists;
 
-            kdtree.radiusSearch(query, indices, dists, merge_distance_px * merge_distance_px,
-                               INT_MAX, cv::flann::SearchParams(32));
+            int num_found = kdtree.radiusSearch(query, indices, dists, merge_distance_px * merge_distance_px,
+                                                100, cv::flann::SearchParams(32));
 
             if (verbose && i < 5) {
-                log("  ノード " + std::to_string(i) + " で " + std::to_string(indices.size()) + " 個の近接ノードを発見", verbose);
+                log("  ノード " + std::to_string(i) + " で " + std::to_string(num_found) + " 個の近接ノードを発見", verbose);
             }
 
             // Record close pairs (excluding self)
-            for (size_t k = 0; k < indices.size(); ++k) {
-                size_t j = static_cast<size_t>(indices[k]);
-                if (i < j) {  // Avoid duplicates
-                    close_pairs.insert({i, j});
+            if (num_found > 0 && !indices.empty()) {
+                for (int k = 0; k < num_found && k < indices.cols; ++k) {
+                    size_t j = static_cast<size_t>(indices.at<int>(0, k));
+                    if (i < j) {  // Avoid duplicates
+                        close_pairs.insert({i, j});
+                    }
                 }
             }
         }
