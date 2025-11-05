@@ -96,8 +96,9 @@ void FreeSpaceSampler::sample_free_space(
     }
 
     // Iterative sampling
+    // Python uses while True (infinite loop), but we set a high limit for safety
     int iteration = 0;
-    int max_iterations = 20;
+    int max_iterations = 100;  // Increased from 20 to match Python's behavior
 
     while (iteration < max_iterations) {
         iteration++;
@@ -148,6 +149,10 @@ void FreeSpaceSampler::sample_free_space(
         int nodes_added_this_iter = 0;
         double half_threshold = distance_threshold_px / 2.0;
 
+        // CRITICAL FIX: Track nodes added in THIS iteration
+        // This matches Python's behavior where idx.insert() immediately adds to R-tree
+        std::vector<cv::Point> nodes_added_in_this_iteration;
+
         // Build KD-tree from existing nodes
         auto existing_nodes = graph.nodes();
         if (!existing_nodes.empty()) {
@@ -161,35 +166,69 @@ void FreeSpaceSampler::sample_free_space(
 
             for (const auto& point : local_maxima) {
                 NodeId candidate(point.y, point.x);
+                bool too_close = false;
 
-                // Query KD-tree for all nodes within half threshold (to match Python's R-tree logic)
+                // Check 1: Query KD-tree for existing nodes (from before this iteration)
                 cv::Mat query(1, 2, CV_32F);
                 query.at<float>(0, 0) = static_cast<float>(point.x);
                 query.at<float>(0, 1) = static_cast<float>(point.y);
 
                 cv::Mat indices, dists;
-
-                // Use radiusSearch to find all nodes within half_threshold
-                // This matches Python's bounding box intersection check
                 int num_found = kdtree.radiusSearch(query, indices, dists,
-                                                    half_threshold * half_threshold,  // squared radius
+                                                    half_threshold * half_threshold,
                                                     100, cv::flann::SearchParams(32));
 
-                // Only add node if NO existing nodes are within half_threshold
-                // This matches Python's logic: if len(intersections) == 0
-                if (num_found == 0) {
+                if (num_found > 0) {
+                    too_close = true;
+                }
+
+                // Check 2: CRITICAL - Check nodes added in THIS iteration
+                // This matches Python's: idx.insert(len(graph.nodes) - 1, (col, row, col, row))
+                if (!too_close) {
+                    for (const auto& added : nodes_added_in_this_iteration) {
+                        double dx = point.x - added.x;
+                        double dy = point.y - added.y;
+                        double dist_sq = dx * dx + dy * dy;
+
+                        if (dist_sq < half_threshold * half_threshold) {
+                            too_close = true;
+                            break;
+                        }
+                    }
+                }
+
+                // Only add node if NO nodes (existing or newly-added) are within half_threshold
+                if (!too_close) {
                     graph.add_node(candidate, NodeData("free_space"));
                     distance_map.at<float>(point.y, point.x) = 0.0f;
+                    nodes_added_in_this_iteration.push_back(point);  // Track for subsequent checks
                     nodes_added_this_iter++;
                 }
             }
         } else {
-            // No existing nodes, add all local maxima
+            // No existing nodes, but still need to check nodes added in this iteration
             for (const auto& point : local_maxima) {
                 NodeId candidate(point.y, point.x);
-                graph.add_node(candidate, NodeData("free_space"));
-                distance_map.at<float>(point.y, point.x) = 0.0f;
-                nodes_added_this_iter++;
+                bool too_close = false;
+
+                // Check nodes added in this iteration
+                for (const auto& added : nodes_added_in_this_iteration) {
+                    double dx = point.x - added.x;
+                    double dy = point.y - added.y;
+                    double dist_sq = dx * dx + dy * dy;
+
+                    if (dist_sq < half_threshold * half_threshold) {
+                        too_close = true;
+                        break;
+                    }
+                }
+
+                if (!too_close) {
+                    graph.add_node(candidate, NodeData("free_space"));
+                    distance_map.at<float>(point.y, point.x) = 0.0f;
+                    nodes_added_in_this_iteration.push_back(point);
+                    nodes_added_this_iter++;
+                }
             }
         }
 
