@@ -111,6 +111,13 @@ def main():
             logger
         )
 
+        # Save distance transform for comparison with C++
+        import os
+        os.makedirs("debug_output", exist_ok=True)
+        np.save("debug_output/python_step1_dist_transform.npy", dist_transform)
+        cv2.imwrite("debug_output/python_step1_inflated_map.png", inflated_map)
+        logger.info("Saved distance transform to debug_output/ for comparison")
+
     # Compute transform parameters
     cos_rot = np.cos(args.rotation)
     sin_rot = np.sin(args.rotation)

@@ -1,8 +1,54 @@
 #include "step1_preprocess.hpp"
 #include <iostream>
 #include <stdexcept>
+#include <fstream>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 namespace swagger {
+
+// Simple function to save cv::Mat as numpy .npy file (float32 only)
+void save_npy_float32(const std::string& filename, const cv::Mat& mat) {
+    if (mat.type() != CV_32F) {
+        std::cerr << "Error: save_npy_float32 only supports CV_32F matrices" << std::endl;
+        return;
+    }
+
+    std::ofstream file(filename, std::ios::binary);
+    if (!file.is_open()) {
+        std::cerr << "Error: Cannot open file for writing: " << filename << std::endl;
+        return;
+    }
+
+    // Write numpy header
+    file.write("\x93NUMPY", 6);  // Magic number
+    file.put(0x01);  // Major version
+    file.put(0x00);  // Minor version
+
+    // Create header string
+    std::string header = "{'descr': '<f4', 'fortran_order': False, 'shape': (";
+    header += std::to_string(mat.rows) + ", " + std::to_string(mat.cols) + "), }";
+
+    // Pad header to multiple of 64 bytes (including magic, version, and header length)
+    size_t total_header_len = 6 + 2 + 2 + header.size();  // magic + version + len + header
+    size_t padding = (64 - (total_header_len % 64)) % 64;
+    header.append(padding, ' ');
+    header += '\n';
+
+    // Write header length
+    uint16_t header_len = static_cast<uint16_t>(header.size());
+    file.write(reinterpret_cast<const char*>(&header_len), 2);
+
+    // Write header
+    file.write(header.c_str(), header.size());
+
+    // Write data (row-major order, which is C-order / not fortran order)
+    for (int i = 0; i < mat.rows; ++i) {
+        file.write(reinterpret_cast<const char*>(mat.ptr<float>(i)), mat.cols * sizeof(float));
+    }
+
+    file.close();
+}
 
 void MapProcessor::log(const std::string& message, bool verbose) {
     if (verbose) {
@@ -101,6 +147,18 @@ Step1Data MapProcessor::preprocess(
             data.inflated_map
         );
         log("距離変換完了", verbose);
+
+        // Save distance transform for comparison with Python
+        std::string debug_dir = "debug_output";
+        #ifdef _WIN32
+            _mkdir(debug_dir.c_str());
+        #else
+            mkdir(debug_dir.c_str(), 0755);
+        #endif
+
+        save_npy_float32(debug_dir + "/cpp_step1_dist_transform.npy", data.dist_transform);
+        cv::imwrite(debug_dir + "/cpp_step1_inflated_map.png", data.inflated_map);
+        log("距離変換をdebug_output/に保存しました（比較用）", verbose);
     }
 
     log("Step 1 完了！", verbose);
