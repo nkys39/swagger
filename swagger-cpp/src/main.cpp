@@ -278,6 +278,8 @@ int main(int argc, char* argv[]) {
             }
             if (config.verbose) {
                 graph.print_statistics("Step 2後");
+                // Save visualization
+                swagger::FileWriter::save_visualization(graph, step1_data, config.output_dir + "/cpp_step2.png");
             }
         }
 
@@ -292,6 +294,8 @@ int main(int argc, char* argv[]) {
             );
             if (config.verbose) {
                 graph.print_statistics("Step 3後");
+                // Save visualization
+                swagger::FileWriter::save_visualization(graph, step1_data, config.output_dir + "/cpp_step3.png");
             }
         }
 
@@ -305,6 +309,8 @@ int main(int argc, char* argv[]) {
             );
             if (config.verbose) {
                 graph.print_statistics("Step 4後");
+                // Save visualization
+                swagger::FileWriter::save_visualization(graph, step1_data, config.output_dir + "/cpp_step4.png");
             }
         }
 
@@ -317,6 +323,8 @@ int main(int argc, char* argv[]) {
             );
             if (config.verbose) {
                 graph.print_statistics("Step 5後");
+                // Save visualization
+                swagger::FileWriter::save_visualization(graph, step1_data, config.output_dir + "/cpp_step5.png");
             }
         }
 
@@ -335,6 +343,8 @@ int main(int argc, char* argv[]) {
 
             if (config.verbose) {
                 graph.print_statistics("Step 6後（最終）");
+                // Save visualization
+                swagger::FileWriter::save_visualization(graph, step1_data, config.output_dir + "/cpp_step6.png");
             }
         }
 
