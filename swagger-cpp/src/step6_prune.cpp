@@ -153,6 +153,10 @@ size_t GraphPruner::merge_close_nodes(
 
         // Process close pairs
         size_t pair_count = 0;
+        size_t merge_count = 0;
+        size_t skip_already_removed = 0;
+        size_t skip_collision = 0;
+
         for (const auto& pair : close_pairs) {
             pair_count++;
             if (verbose && pair_count % 100 == 0) {
@@ -163,6 +167,7 @@ size_t GraphPruner::merge_close_nodes(
             size_t j = pair.second;
 
             if (!graph.has_node(nodes[i]) || !graph.has_node(nodes[j])) {
+                skip_already_removed++;
                 continue;  // Already removed
             }
 
@@ -181,6 +186,7 @@ size_t GraphPruner::merge_close_nodes(
 
                 if (check_line_collision(p1, p2, inflated_map)) {
                     can_merge = false;
+                    skip_collision++;
                     break;
                 }
             }
@@ -197,7 +203,14 @@ size_t GraphPruner::merge_close_nodes(
                 // Remove n2
                 graph.remove_node(n2);
                 merged = true;
+                merge_count++;
             }
+        }
+
+        if (verbose) {
+            log("  統合したペア: " + std::to_string(merge_count), verbose);
+            log("  スキップ（既削除）: " + std::to_string(skip_already_removed), verbose);
+            log("  スキップ（衝突）: " + std::to_string(skip_collision), verbose);
         }
 
         if (verbose) {
