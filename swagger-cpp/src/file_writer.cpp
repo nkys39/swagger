@@ -154,6 +154,72 @@ void FileWriter::save_edges_txt(const Graph& graph, const std::string& filepath)
     file.close();
 }
 
+void FileWriter::save_json(const Graph& graph, const std::string& filepath) {
+    std::ofstream file(filepath);
+    if (!file.is_open()) {
+        throw std::runtime_error("Failed to open file: " + filepath);
+    }
+
+    file << "{\n";
+    file << "  \"nodes\": [\n";
+
+    auto nodes = graph.nodes();
+    for (size_t i = 0; i < nodes.size(); ++i) {
+        const auto& node = nodes[i];
+        const auto& data = graph.get_node_data(node);
+
+        file << "    {\n";
+        file << "      \"pixel\": {\n";
+        file << "        \"row\": " << node.first << ",\n";
+        file << "        \"col\": " << node.second << "\n";
+        file << "      },\n";
+        file << "      \"node_type\": \"" << data.node_type << "\",\n";
+        file << "      \"world\": {\n";
+        file << std::fixed << std::setprecision(6);
+        file << "        \"x\": " << data.world.x << ",\n";
+        file << "        \"y\": " << data.world.y << ",\n";
+        file << "        \"z\": " << data.world.z << "\n";
+        file << "      }\n";
+        file << "    }";
+        if (i < nodes.size() - 1) {
+            file << ",";
+        }
+        file << "\n";
+    }
+
+    file << "  ],\n";
+    file << "  \"edges\": [\n";
+
+    auto edges = graph.edges();
+    for (size_t i = 0; i < edges.size(); ++i) {
+        const auto& edge = edges[i];
+        const auto& data = graph.get_edge_data(edge.first, edge.second);
+
+        file << "    {\n";
+        file << "      \"source\": {\n";
+        file << "        \"row\": " << edge.first.first << ",\n";
+        file << "        \"col\": " << edge.first.second << "\n";
+        file << "      },\n";
+        file << "      \"target\": {\n";
+        file << "        \"row\": " << edge.second.first << ",\n";
+        file << "        \"col\": " << edge.second.second << "\n";
+        file << "      },\n";
+        file << std::fixed << std::setprecision(3);
+        file << "      \"weight\": " << data.weight << ",\n";
+        file << "      \"edge_type\": \"" << data.edge_type << "\"\n";
+        file << "    }";
+        if (i < edges.size() - 1) {
+            file << ",";
+        }
+        file << "\n";
+    }
+
+    file << "  ]\n";
+    file << "}\n";
+
+    file.close();
+}
+
 void FileWriter::save_visualization(
     const Graph& graph,
     const Step1Data& step1_data,
@@ -227,6 +293,15 @@ void FileWriter::save_all(
     std::string edges_path = output_dir + "/edges.txt";
     save_edges_txt(graph, edges_path);
     log("エッジ情報を保存しました: " + edges_path, verbose);
+
+    // Save JSON
+    std::string json_path = output_dir + "/waypoint_graph.json";
+    try {
+        save_json(graph, json_path);
+        log("JSON形式で保存しました: " + json_path, verbose);
+    } catch (const std::exception& e) {
+        log("JSON保存エラー: " + std::string(e.what()), verbose);
+    }
 
     // Save visualization
     std::string vis_path = output_dir + "/graph_visualization.png";

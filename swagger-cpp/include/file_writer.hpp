@@ -22,6 +22,9 @@ public:
     // Save edges as text
     static void save_edges_txt(const Graph& graph, const std::string& filepath);
 
+    // Save graph in JSON format
+    static void save_json(const Graph& graph, const std::string& filepath);
+
     // Save visualization
     static void save_visualization(
         const Graph& graph,

@@ -147,7 +147,7 @@ def main():
     print(f"Python完了: {len(python_nodes)} ノード")
 
     # Load C++ graph from JSON
-    cpp_json_path = "output_cpp/waypoint_graph.json"
+    cpp_json_path = "output/waypoint_graph.json"
 
     print("\n" + "-" * 80)
     print(f"C++グラフを読み込み中: {cpp_json_path}")
@@ -158,6 +158,7 @@ def main():
         print(f"\n先にC++版を実行してください:")
         print(f"  cd swagger-cpp/build")
         print(f"  ./generate_graph --map ../../maps/carter_warehouse_navigation.png --safety-distance 0.3")
+        print(f"\nまたは、JSONが別のディレクトリに出力されている場合は、このスクリプトのパスを修正してください。")
         return 1
 
     cpp_nodes = load_cpp_graph(cpp_json_path)
