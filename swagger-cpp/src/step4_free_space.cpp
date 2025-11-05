@@ -96,9 +96,9 @@ void FreeSpaceSampler::sample_free_space(
     }
 
     // Iterative sampling
-    // Python uses while True (infinite loop), but we set a high limit for safety
+    // Python uses while True (infinite loop), we set a very high limit to match
     int iteration = 0;
-    int max_iterations = 100;  // Increased from 20 to match Python's behavior
+    int max_iterations = 10000;  // Very high limit to match Python's while True behavior
 
     while (iteration < max_iterations) {
         iteration++;
@@ -242,50 +242,8 @@ void FreeSpaceSampler::sample_free_space(
         }
     }
 
-    // Connect new nodes to nearby existing nodes
-    auto all_nodes = graph.nodes();
-    std::vector<NodeId> new_nodes(all_nodes.begin() + initial_num_nodes, all_nodes.end());
-
-    log("新しいノードを近傍ノードと接続中...", verbose);
-
-    for (const auto& new_node : new_nodes) {
-        const auto& new_node_data = graph.get_node_data(new_node);
-        if (new_node_data.node_type != "free_space") {
-            continue;
-        }
-
-        // Find closest nodes within connection range
-        double connection_range = 3.0 * distance_threshold_px;
-        std::vector<std::pair<double, NodeId>> candidates;
-
-        for (const auto& node : all_nodes) {
-            if (node == new_node) continue;
-
-            double dist = euclidean_distance(new_node, node);
-            if (dist <= connection_range) {
-                candidates.push_back({dist, node});
-            }
-        }
-
-        // Sort by distance and connect to closest nodes
-        std::sort(candidates.begin(), candidates.end());
-
-        int max_connections = 5;
-        int connections_made = 0;
-
-        for (const auto& [dist, node] : candidates) {
-            if (connections_made >= max_connections) break;
-
-            // Check collision
-            cv::Point p1(new_node.second, new_node.first);
-            cv::Point p2(node.second, node.first);
-
-            if (!check_line_collision(p1, p2, step1_data.inflated_map)) {
-                graph.add_edge(new_node, node, EdgeData(dist, "free_space"));
-                connections_made++;
-            }
-        }
-    }
+    // Python implementation does NOT add edges in Step 4, only nodes
+    // Edges are added in later steps (Step 5 Delaunay shortcuts, etc.)
 
     size_t num_nodes_added = graph.num_nodes() - initial_num_nodes;
     log(std::to_string(num_nodes_added) + "個のフリースペースノードを追加しました", verbose);
