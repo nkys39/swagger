@@ -36,6 +36,10 @@ ENV/
 graphs/*
 results/*
 visualizations/*
+debug_output/
+output/
+*.npy
+skeleton_nodes.json
 
 # OS specific
 .DS_Store
