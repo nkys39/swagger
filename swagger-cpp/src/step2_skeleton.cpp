@@ -74,27 +74,89 @@ cv::Mat SkeletonGraphBuilder::compute_skeleton(const cv::Mat& free_map) {
     // Threshold to ensure binary (0 or 255)
     cv::threshold(binary, binary, 127, 255, cv::THRESH_BINARY);
 
-    // Try both thinning methods and save for comparison
-    cv::Mat skeleton_zhangsuen, skeleton_guohall;
+    // Convert to 0/1 binary for skeletonization
+    cv::Mat skeleton = binary / 255;
 
-    // Method 1: Zhang-Suen (original)
-    cv::ximgproc::thinning(binary, skeleton_zhangsuen, cv::ximgproc::THINNING_ZHANGSUEN);
+    // Zhang-Suen lookup table (256 elements)
+    // 0: keep, 1: delete in step 1, 2: delete in step 2, 3: delete in both steps
+    static const uint8_t LUT[256] = {
+        0,0,0,1,0,0,1,3,0,0,3,1,1,0,1,3,
+        0,0,0,0,0,0,0,0,2,0,2,0,3,0,3,3,
+        0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,
+        2,0,0,0,0,0,0,0,2,0,0,0,3,0,2,2,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        2,0,0,0,0,0,0,0,2,0,0,0,2,0,0,0,
+        3,0,0,0,0,0,0,0,3,0,0,0,3,0,2,0,
+        0,0,3,1,0,0,1,3,0,0,0,0,0,0,0,1,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        3,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        2,3,1,3,0,0,1,3,0,0,0,0,0,0,0,1,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        2,3,0,1,0,0,0,1,0,0,0,0,0,0,0,0,
+        3,3,0,1,0,0,0,0,2,2,0,0,2,0,0,0
+    };
 
-    // Method 2: Guo-Hall (trying to match Python)
-    cv::ximgproc::thinning(binary, skeleton_guohall, cv::ximgproc::THINNING_GUOHALL);
+    bool pixel_removed = true;
 
-    // Save both for comparison
+    while (pixel_removed) {
+        pixel_removed = false;
+
+        // Step 1 and Step 2
+        for (int step = 0; step < 2; step++) {
+            cv::Mat marker = cv::Mat::zeros(skeleton.size(), CV_8UC1);
+
+            // Scan all pixels except borders
+            for (int i = 1; i < skeleton.rows - 1; i++) {
+                for (int j = 1; j < skeleton.cols - 1; j++) {
+                    if (skeleton.at<uint8_t>(i, j) == 0) continue;
+
+                    // Encode 8-neighborhood
+                    // Neighbor layout:
+                    // P9 P2 P3
+                    // P8 P1 P4
+                    // P7 P6 P5
+                    int neighbors = 0;
+                    neighbors += skeleton.at<uint8_t>(i-1, j-1) * 1;   // P9
+                    neighbors += skeleton.at<uint8_t>(i-1, j)   * 2;   // P2
+                    neighbors += skeleton.at<uint8_t>(i-1, j+1) * 4;   // P3
+                    neighbors += skeleton.at<uint8_t>(i,   j+1) * 8;   // P4
+                    neighbors += skeleton.at<uint8_t>(i+1, j+1) * 16;  // P5
+                    neighbors += skeleton.at<uint8_t>(i+1, j)   * 32;  // P6
+                    neighbors += skeleton.at<uint8_t>(i+1, j-1) * 64;  // P7
+                    neighbors += skeleton.at<uint8_t>(i,   j-1) * 128; // P8
+
+                    uint8_t code = LUT[neighbors];
+
+                    // Step 1: delete code 1 or 3
+                    // Step 2: delete code 2 or 3
+                    if ((step == 0 && (code == 1 || code == 3)) ||
+                        (step == 1 && (code == 2 || code == 3))) {
+                        marker.at<uint8_t>(i, j) = 1;
+                        pixel_removed = true;
+                    }
+                }
+            }
+
+            // Delete marked pixels
+            skeleton.setTo(0, marker);
+        }
+    }
+
+    // Convert back to 0/255
+    skeleton *= 255;
+
+    // Save for comparison
     std::string debug_dir = "debug_output";
     #ifdef _WIN32
         _mkdir(debug_dir.c_str());
     #else
         mkdir(debug_dir.c_str(), 0755);
     #endif
-    cv::imwrite(debug_dir + "/skeleton_cpp_zhangsuen.png", skeleton_zhangsuen);
-    cv::imwrite(debug_dir + "/skeleton_cpp_guohall.png", skeleton_guohall);
+    cv::imwrite(debug_dir + "/skeleton_cpp_zhangsuen_custom.png", skeleton);
 
-    // Use Zhang-Suen method (default)
-    return skeleton_zhangsuen;
+    return skeleton;
 }
 
 int SkeletonGraphBuilder::count_neighbors(const cv::Mat& skeleton, int y, int x) {
