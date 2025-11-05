@@ -115,7 +115,9 @@ def main():
         import os
         os.makedirs("debug_output", exist_ok=True)
         np.save("debug_output/python_step1_dist_transform.npy", dist_transform)
-        cv2.imwrite("debug_output/python_step1_inflated_map.png", inflated_map)
+        # Convert inflated_map from 0/1 to 0/255 for PNG saving
+        inflated_map_255 = (inflated_map * 255).astype(np.uint8)
+        cv2.imwrite("debug_output/python_step1_inflated_map.png", inflated_map_255)
         logger.info("Saved distance transform to debug_output/ for comparison")
 
     # Compute transform parameters
