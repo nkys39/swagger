@@ -93,8 +93,8 @@ cv::Mat SkeletonGraphBuilder::compute_skeleton(const cv::Mat& free_map) {
     cv::imwrite(debug_dir + "/skeleton_cpp_zhangsuen.png", skeleton_zhangsuen);
     cv::imwrite(debug_dir + "/skeleton_cpp_guohall.png", skeleton_guohall);
 
-    // Use Guo-Hall method (attempting to match Python's skimage)
-    return skeleton_guohall;
+    // Use Zhang-Suen method (default)
+    return skeleton_zhangsuen;
 }
 
 int SkeletonGraphBuilder::count_neighbors(const cv::Mat& skeleton, int y, int x) {
@@ -338,7 +338,7 @@ void SkeletonGraphBuilder::build_skeleton_graph(
 
     // Compute skeleton
     log("スケルトン（medial axis）を計算中...", verbose);
-    log("使用メソッド: Guo-Hall (Pythonのskimageに合わせるため)", verbose);
+    log("使用メソッド: Zhang-Suen (デフォルト)", verbose);
     cv::Mat skeleton = compute_skeleton(free_map);
 
     int skeleton_pixels = cv::countNonZero(skeleton);
@@ -369,7 +369,7 @@ void SkeletonGraphBuilder::build_skeleton_graph(
         log("スケルトン画像を保存しました:", verbose);
         log("  - debug_output/skeleton_cpp_zhangsuen.png (Zhang-Suen法)", verbose);
         log("  - debug_output/skeleton_cpp_guohall.png (Guo-Hall法)", verbose);
-        log("  - debug_output/skeleton_cpp_final.png (使用中: Guo-Hall)", verbose);
+        log("  - debug_output/skeleton_cpp_final.png (使用中: Zhang-Suen)", verbose);
     }
 
     // Extract branches from skeleton
