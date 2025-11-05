@@ -63,8 +63,11 @@ std::vector<std::vector<cv::Point>> BoundarySampler::find_obstacle_contours(
     double boundary_inflation_px
 ) {
     // Filter obstacles by boundary inflation
+    // Match Python's logic: dist_transform >= boundary_inflation
+    // Note: cv::threshold with THRESH_BINARY uses '>' (greater than), but we need '>=' (greater or equal)
+    // So we subtract a small epsilon to include the boundary value
     cv::Mat filtered;
-    cv::threshold(dist_transform, filtered, boundary_inflation_px, 255, cv::THRESH_BINARY);
+    cv::threshold(dist_transform, filtered, boundary_inflation_px - 1e-6, 255, cv::THRESH_BINARY);
     filtered.convertTo(filtered, CV_8U);
 
     // Find contours
