@@ -1,0 +1,34 @@
+【skimage.morphology.skeletonize のC++移植のための調査依頼】
+
+PythonのskimageライブラリとC++でスケルトン生成の実装を合わせたいです。
+
+■現在の状況
+Python: skimage.morphology.skeletonize(binary_image) ←デフォルトメソッド
+C++: OpenCV cv::ximgproc::thinning() (Zhang-SuenとGuo-Hallを試した)
+→結果が一致しない（画素数、トポロジーが異なる）
+
+■調査してほしいこと
+
+1. skimage.morphology.skeletonize のデフォルトアルゴリズムは何か？
+   - 使用しているアルゴリズム名
+   - 元論文やリファレンス
+   - GitHubのソースコードへのリンク
+
+2. そのアルゴリズムの詳細
+   - ステップバイステップの処理フロー
+   - 削除判定条件（どの画素を削除するか）
+   - 疑似コードまたは実装例
+
+3. OpenCVのthinningとの違い
+   - なぜOpenCVでは一致しないのか
+   - アルゴリズム的な差異
+
+4. C++での実装方法
+   - 同じアルゴリズムを実装しているC++ライブラリの有無
+   - 自分で実装する場合の注意点
+   - 簡単なテストケースと期待される出力
+
+■目標
+skimage.morphology.skeletonizeと完全に一致するC++実装を作りたい
+
+よろしくお願いします！
