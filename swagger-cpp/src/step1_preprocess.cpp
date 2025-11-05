@@ -81,7 +81,10 @@ void MapProcessor::distance_transform(
 
     // Filter by safety distance
     double threshold_px = safety_distance / resolution;
-    cv::Mat inflated_full = dist_full < threshold_px;
+    cv::Mat inflated_full;
+    cv::compare(dist_full, threshold_px, inflated_full, cv::CMP_LT);
+    // Ensure inflated_full is CV_8U with values 0 or 255
+    inflated_full.convertTo(inflated_full, CV_8U);
 
     // Remove padding
     dist_transform_out = dist_full(cv::Rect(1, 1, free_map.cols, free_map.rows)).clone();
@@ -119,7 +122,10 @@ Step1Data MapProcessor::preprocess(
     }
 
     // Create free space map
-    data.free_map = data.original_map > occupancy_threshold;
+    cv::Mat free_map_bool = data.original_map > occupancy_threshold;
+    // Ensure free_map is CV_8U with values 0 or 255 (not 0 or 1)
+    free_map_bool.convertTo(data.free_map, CV_8U, 255.0);
+    cv::threshold(data.free_map, data.free_map, 127, 255, cv::THRESH_BINARY);
     int free_pixels = cv::countNonZero(data.free_map);
     int total_pixels = data.free_map.rows * data.free_map.cols;
     double free_percentage = (static_cast<double>(free_pixels) / total_pixels) * 100.0;
@@ -157,7 +163,16 @@ Step1Data MapProcessor::preprocess(
         #endif
 
         save_npy_float32(debug_dir + "/cpp_step1_dist_transform.npy", data.dist_transform);
-        cv::imwrite(debug_dir + "/cpp_step1_inflated_map.png", data.inflated_map);
+
+        // Ensure inflated_map has correct values (0 or 255) before saving
+        cv::Mat inflated_to_save;
+        if (data.inflated_map.depth() == CV_8U) {
+            // Convert any non-zero values to 255
+            cv::threshold(data.inflated_map, inflated_to_save, 0, 255, cv::THRESH_BINARY);
+        } else {
+            data.inflated_map.convertTo(inflated_to_save, CV_8U, 255.0);
+        }
+        cv::imwrite(debug_dir + "/cpp_step1_inflated_map.png", inflated_to_save);
         log("距離変換をdebug_output/に保存しました（比較用）", verbose);
     }
 
