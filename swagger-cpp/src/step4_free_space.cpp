@@ -162,20 +162,22 @@ void FreeSpaceSampler::sample_free_space(
             for (const auto& point : local_maxima) {
                 NodeId candidate(point.y, point.x);
 
-                // Query KD-tree for nearest neighbor within half threshold
+                // Query KD-tree for all nodes within half threshold (to match Python's R-tree logic)
                 cv::Mat query(1, 2, CV_32F);
                 query.at<float>(0, 0) = static_cast<float>(point.x);
                 query.at<float>(0, 1) = static_cast<float>(point.y);
 
-                std::vector<int> indices(1);
-                std::vector<float> dists(1);
+                cv::Mat indices, dists;
 
-                kdtree.knnSearch(query, indices, dists, 1, cv::flann::SearchParams(32));
+                // Use radiusSearch to find all nodes within half_threshold
+                // This matches Python's bounding box intersection check
+                int num_found = kdtree.radiusSearch(query, indices, dists,
+                                                    half_threshold * half_threshold,  // squared radius
+                                                    100, cv::flann::SearchParams(32));
 
-                // Check if nearest neighbor is within half threshold
-                bool too_close = (dists[0] < half_threshold * half_threshold);  // squared distance
-
-                if (!too_close) {
+                // Only add node if NO existing nodes are within half_threshold
+                // This matches Python's logic: if len(intersections) == 0
+                if (num_found == 0) {
                     graph.add_node(candidate, NodeData("free_space"));
                     distance_map.at<float>(point.y, point.x) = 0.0f;
                     nodes_added_this_iter++;
