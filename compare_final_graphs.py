@@ -143,27 +143,14 @@ def main():
         occupancy_threshold=occupancy_threshold,
     )
 
-    # Get nodes as list of (row, col) tuples and ensure proper 2D array format
+    # Get nodes and extract pixel coordinates from node data
     nodes_list = list(python_graph.nodes())
 
-    # Debug: Check node format
     if len(nodes_list) > 0:
-        print(f"最初のノードの型: {type(nodes_list[0])}")
-        print(f"最初の3ノード: {nodes_list[:3]}")
-
-        # Check if nodes are tuples or have 'pixel' attribute
-        first_node = nodes_list[0]
-        if isinstance(first_node, tuple):
-            # Nodes are (row, col) tuples
-            python_nodes = np.array([(float(node[0]), float(node[1])) for node in nodes_list], dtype=np.float32)
-        else:
-            # Nodes might have pixel coordinates as attributes
-            # In Python implementation, nodes are stored as (row, col) tuples directly
-            # So this should not happen, but let's check node data
-            print(f"ノードが予期しない形式です。ノードデータを確認中...")
-            print(f"グラフのノードデータ: {python_graph.nodes[first_node]}")
-            # Try to extract pixel coordinates from node data
-            python_nodes = np.array([(float(node[0]), float(node[1])) for node in nodes_list], dtype=np.float32)
+        # Nodes are stored as integer IDs, pixel coordinates are in node data
+        python_nodes = np.array([
+            python_graph.nodes[node_id]['pixel'] for node_id in nodes_list
+        ], dtype=np.float32)
     else:
         python_nodes = np.array([], dtype=np.float32).reshape(0, 2)
 
