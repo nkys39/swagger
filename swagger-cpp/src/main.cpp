@@ -5,6 +5,7 @@
 #include "step4_free_space.hpp"
 #include "step5_delaunay.hpp"
 #include "step6_prune.hpp"
+#include "skeleton_loader.hpp"
 #include "file_writer.hpp"
 #include "utils.hpp"
 #include <iostream>
@@ -31,6 +32,7 @@ void print_usage(const char* program_name) {
     std::cout << "  --use-delaunay            Step5: Delaunayショートカットを追加\n";
     std::cout << "  --prune                   Step6: グラフを刈り込む\n\n";
     std::cout << "Step 2 パラメータ:\n";
+    std::cout << "  --skeleton-from-json <パス>      PythonでエクスポートしたJSONからスケルトンを読み込む\n";
     std::cout << "  --skeleton-sample-distance <値>  サンプリング距離（m、デフォルト: 1.5）\n\n";
     std::cout << "Step 3 パラメータ:\n";
     std::cout << "  --boundary-inflation-factor <値>  境界膨張係数（デフォルト: 1.5）\n";
@@ -51,6 +53,7 @@ struct Config {
 
     // Step 2: Skeleton
     bool use_skeleton = true;  // Default: enabled
+    std::string skeleton_json_path;  // If set, load skeleton from JSON instead
     double skeleton_sample_distance = 1.5;
 
     // Step 3: Boundary
@@ -126,6 +129,15 @@ bool parse_args(int argc, char* argv[], Config& config) {
         // Step 2: Skeleton
         else if (arg == "--use-skeleton") {
             config.use_skeleton = true;
+        }
+        else if (arg == "--skeleton-from-json") {
+            if (i + 1 < argc) {
+                config.skeleton_json_path = argv[++i];
+                config.use_skeleton = true;  // Enable skeleton when using JSON
+            } else {
+                std::cerr << "エラー: --skeleton-from-json requires an argument" << std::endl;
+                return false;
+            }
         }
         else if (arg == "--skeleton-sample-distance") {
             if (i + 1 < argc) {
@@ -245,12 +257,25 @@ int main(int argc, char* argv[]) {
 
         // Step 2: Skeleton graph (optional)
         if (config.use_skeleton) {
-            swagger::SkeletonGraphBuilder::build_skeleton_graph(
-                graph,
-                step1_data,
-                config.skeleton_sample_distance,
-                config.verbose
-            );
+            if (!config.skeleton_json_path.empty()) {
+                // Load skeleton from JSON (exported from Python)
+                if (!swagger::SkeletonLoader::load_from_json(
+                    graph,
+                    config.skeleton_json_path,
+                    config.verbose
+                )) {
+                    std::cerr << "エラー: スケルトンJSONの読み込みに失敗しました" << std::endl;
+                    return 1;
+                }
+            } else {
+                // Generate skeleton using C++ implementation
+                swagger::SkeletonGraphBuilder::build_skeleton_graph(
+                    graph,
+                    step1_data,
+                    config.skeleton_sample_distance,
+                    config.verbose
+                );
+            }
             if (config.verbose) {
                 graph.print_statistics("Step 2後");
             }

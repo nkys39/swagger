@@ -25,6 +25,7 @@ set(SOURCES
     src/utils.cpp
     src/step1_preprocess.cpp
     src/step2_skeleton.cpp
+    src/skeleton_loader.cpp
     src/step3_boundary.cpp
     src/step4_free_space.cpp
     src/step5_delaunay.cpp
