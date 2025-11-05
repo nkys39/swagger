@@ -173,13 +173,21 @@ void FileWriter::save_json(const Graph& graph, const std::string& filepath) {
         file << "        \"row\": " << node.first << ",\n";
         file << "        \"col\": " << node.second << "\n";
         file << "      },\n";
-        file << "      \"node_type\": \"" << data.node_type << "\",\n";
-        file << "      \"world\": {\n";
-        file << std::fixed << std::setprecision(6);
-        file << "        \"x\": " << data.world.x << ",\n";
-        file << "        \"y\": " << data.world.y << ",\n";
-        file << "        \"z\": " << data.world.z << "\n";
-        file << "      }\n";
+        file << "      \"node_type\": \"" << data.node_type << "\"";
+
+        // Add world coordinates if available
+        if (data.world.has_value()) {
+            file << ",\n";
+            file << "      \"world\": {\n";
+            file << std::fixed << std::setprecision(6);
+            file << "        \"x\": " << data.world.value().x << ",\n";
+            file << "        \"y\": " << data.world.value().y << ",\n";
+            file << "        \"z\": " << data.world.value().z << "\n";
+            file << "      }\n";
+        } else {
+            file << "\n";
+        }
+
         file << "    }";
         if (i < nodes.size() - 1) {
             file << ",";
