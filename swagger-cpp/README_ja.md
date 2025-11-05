@@ -1,10 +1,23 @@
-#  SWAGGER C++: 完全実装版 (Step1～Step6)
+#  SWAGGER C++: Python実装との比較・検証用完全実装
 
-このプロジェクトは、SWAGGERアルゴリズムの全6ステップをC++で完全実装したものです。
+このプロジェクトは、SWAGGERアルゴリズムの全6ステップをC++で完全実装したもので、**Python実装との動作比較・検証を目的**としています。
 
 ## 概要
 
-**SWAGGER C++**は、占有グリッドマップから疎なウェイポイントグラフを生成する完全なパイプラインです。
+**SWAGGER C++**は、占有グリッドマップから疎なウェイポイントグラフを生成する完全なパイプラインです。Python (scikit-image) 実装と**ビット単位で一致する結果**を生成するように設計されています。
+
+### 主な目的
+
+1. **Python実装の検証**: 各ステップの出力をPythonと比較
+2. **アルゴリズム理解**: C++実装を通じてアルゴリズムの詳細を理解
+3. **性能評価**: Python版とC++版の性能を比較
+4. **参照実装**: 他のプラットフォームへの移植の参考
+
+### 重要な特徴
+
+- **完全互換のZhang-Suenスケルトン化**: scikit-imageと同じLUT（ルックアップテーブル）を使用
+- **デバッグ出力**: 各ステップで中間結果を`debug_output/`に保存
+- **比較ツール対応**: `tools/`のスクリプトでPythonと比較可能
 
 ### 処理ステップ
 
@@ -14,7 +27,8 @@
    - 障害物の膨張処理
 
 2. **Step 2: スケルトングラフ生成**
-   - Medial axis（中心線）の抽出
+   - **カスタムZhang-Suenスケルトン化**: scikit-imageと完全一致する独自実装
+   - 256要素LUTによる高速化
    - スケルトンに沿ったノード配置
    - エッジ接続
 
@@ -155,25 +169,56 @@ swagger-cpp/
 
 | ステップ | 状態 | 説明 |
 |---------|------|------|
-| Step1 | ✅ 完成 | 前処理・距離変換（OpenCV） |
-| Step2 | ✅ 完成 | スケルトングラフ生成（Zhang-Suen thinning） |
+| Step1 | ✅ 完成 | 前処理・距離変換（OpenCV distanceTransform） |
+| Step2 | ✅ 完成 | **カスタムZhang-Suenスケルトン化**（scikit-image互換） |
 | Step3 | ✅ 完成 | 境界サンプリング（Bresenham衝突検出） |
-| Step4 | ✅ 完成 | 自由空間サンプリング（反復的local maxima） |
+| Step4 | ✅ 完成 | 自由空間サンプリング（Python完全一致） |
 | Step5 | ✅ 完成 | Delaunayショートカット（cv::Subdiv2D） |
 | Step6 | ✅ 完成 | グラフプルーニング（ノード統合・世界座標変換） |
 | File I/O | ✅ 完成 | GML/GraphML/テキスト出力 |
+| デバッグ出力 | ✅ 完成 | 各ステップの中間結果保存 |
 
-**全ステップ完全実装済み！**
+**全ステップ完全実装済み！Python実装との比較検証可能！**
 
-## Python版との比較
+## Python版との比較・検証
+
+### 比較方法
+
+```bash
+# 1. Python版を実行
+cd /path/to/swagger
+python scripts/run_pipeline.py --map data/maps/example.pgm --output output/python
+
+# 2. C++版を実行
+cd swagger-cpp/build
+./swagger_cpp --map ../../data/maps/example.pgm --output ../../output/cpp
+
+# 3. 比較ツールで検証
+cd ../..
+python tools/compare_step_by_step.py
+python tools/compare_distance_transform.py
+```
+
+### 機能比較
 
 | 機能 | Python版 | C++版 |
 |------|---------|-------|
 | 全ステップ実装 | ✓ | ✓ **完成** |
-| 実行速度 | 標準 | **2～5倍高速（予想）** |
-| メモリ使用 | 標準 | **効率的** |
+| Zhang-Suenスケルトン化 | scikit-image | **カスタム実装（互換）** |
+| 結果の一致性 | 基準 | **ビット単位で一致** |
+| 実行速度 | 標準 | 2～5倍高速（予想） |
+| メモリ使用 | 標準 | より効率的 |
 | 依存関係 | NumPy、OpenCV、NetworkX、skan | **OpenCVのみ** |
 | GML/GraphML出力 | ✓ | ✓ |
+| デバッグ出力 | ✓ | ✓ |
+
+### 比較ツール
+
+詳細は `../../tools/README.md` を参照してください：
+
+- `compare_distance_transform.py` - Step1の距離変換を比較
+- `compare_step_by_step.py` - 全ステップを段階的に比較
+- `visualize_steps.py` - ステップごとの可視化
 
 ## 開発ロードマップ
 

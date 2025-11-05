@@ -1,10 +1,21 @@
-# SWAGGER Minimal C++: Step1 + Step3
+# SWAGGER Minimal C++: 軽量版実装（Step1 + Step3）
 
-このプロジェクトは、SWAGGERアルゴリズムのStep1（前処理）とStep3（障害物境界サンプリング）をC++で完全実装したものです。Python版と同等の機能を提供します。
+このプロジェクトは、SWAGGERアルゴリズムの**最小限の機能**（Step1前処理 + Step3境界サンプリング）をC++で実装したものです。
+
+> **注**: 全ステップの完全実装は `../swagger-cpp/` を参照してください。
 
 ## 概要
 
 **SWAGGER Minimal C++**は、占有グリッドマップから障害物境界に沿ったノードとエッジを持つグラフを生成します。
+
+### このプロジェクトの位置づけ
+
+| プロジェクト | ステップ | 用途 |
+|------------|---------|------|
+| **swagger-minimal-cpp**（このディレクトリ） | Step1 + Step3 | 軽量版・学習用 |
+| **swagger-cpp** | 全6ステップ | 完全版・Python比較用 |
+| **swagger-minimal** (Python) | Step1 + Step3 | Python版軽量実装 |
+| **swagger** (Python) | 全6ステップ | Python版完全実装 |
 
 ### 処理ステップ
 
