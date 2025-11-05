@@ -14,11 +14,18 @@
 - [グラフ評価基準](#グラフ評価基準)
 - [Git LFSについて](#git-lfsについて)
 - [CPU版について](#cpu版について)
-- [GML形式とNav2統合](GML_AND_NAV2_INTEGRATION_ja.md) - 出力形式とROS2統合の詳細
-- [GML可視化ツールガイド](GML_VISUALIZATION_TOOLS_ja.md) - グラフを可視化する各種ツールの使い方
-- [C++でのGML処理](GML_CPP_GUIDE_ja.md) - C++でGMLファイルを読み込み・処理・可視化する方法
-- [グラフデータ形式ガイド](GRAPH_FORMATS_GUIDE_ja.md) - GML、GraphML、DOT、JSON等の形式比較
-- [モジュラー実行ガイド](MODULAR_USAGE.md) - 各ステップを個別に実行する方法
+- [ディレクトリ構造](#ディレクトリ構造)
+- [C++実装](#c実装)
+- [比較・デバッグツール](#比較デバッグツール)
+
+### 関連ドキュメント
+
+- [GML形式とNav2統合](docs/GML_AND_NAV2_INTEGRATION_ja.md) - 出力形式とROS2統合の詳細
+- [GML可視化ツールガイド](docs/GML_VISUALIZATION_TOOLS_ja.md) - グラフを可視化する各種ツールの使い方
+- [C++でのGML処理](docs/GML_CPP_GUIDE_ja.md) - C++でGMLファイルを読み込み・処理・可視化する方法
+- [グラフデータ形式ガイド](docs/GRAPH_FORMATS_GUIDE_ja.md) - GML、GraphML、DOT、JSON等の形式比較
+- [モジュラー実行ガイド](docs/MODULAR_USAGE.md) - 各ステップを個別に実行する方法
+- [アルゴリズムステップ使用法](docs/ALGORITHM_STEPS_USAGE.md) - 各ステップの詳細な使い方
 
 ---
 
@@ -1182,6 +1189,116 @@ CPU版とGPU版の処理時間比較（参考値）:
 | 2000×2000  | 8.0秒          | 1.0秒         |
 
 ※ スケルトン生成のみの時間。環境により異なります。
+
+---
+
+## ディレクトリ構造
+
+リポジトリは以下のように構成されています：
+
+```
+swagger/
+├── swagger/                   # Pythonパッケージ本体
+│   ├── waypoint_graph_generator.py  # メイングラフ生成クラス
+│   └── graph_evaluator.py          # グラフ評価ツール
+├── scripts/                   # パイプライン実行スクリプト
+│   ├── run_pipeline.py       # 一括実行スクリプト
+│   └── steps/                # 各ステップの個別スクリプト
+│       ├── step1_preprocess.py
+│       ├── step2_skeleton_graph.py
+│       ├── step3_boundary_sampling.py
+│       ├── step4_free_space_sampling.py
+│       ├── step5_delaunay_shortcuts.py
+│       └── step6_prune_graph.py
+├── swagger-cpp/              # C++実装（Python実装との比較・検証用）
+│   ├── src/                  # C++ソースファイル
+│   ├── include/              # ヘッダーファイル
+│   └── build/                # ビルド出力
+├── tools/                    # 比較・可視化ツール
+│   ├── compare_distance_transform.py
+│   ├── compare_step_by_step.py
+│   ├── visualize_steps.py
+│   └── archive/              # 調査用アーカイブスクリプト
+├── docs/                     # ドキュメント
+│   ├── algorithm.md          # アルゴリズム詳細
+│   ├── tutorial.md           # チュートリアル
+│   ├── debug/                # デバッグガイド
+│   └── *.md                  # 各種ガイド
+├── data/                     # サンプルデータ
+│   └── maps/                 # サンプルマップ (Git LFS)
+├── examples/                 # サンプルコード
+└── integration/              # ROS2統合例
+```
+
+---
+
+## C++実装
+
+このリポジトリには、Python実装と並行してC++実装も含まれています。
+
+### 目的
+
+- Python実装との動作比較・検証
+- アルゴリズムの理解を深めるための参照実装
+- 性能評価とベンチマーク
+
+### 主な特徴
+
+- **ビット単位で一致する実装**: Python (scikit-image) と完全一致するZhang-Suenスケルトン化
+- **Step-by-Stepパイプライン**: Python実装と同じ6ステップ構成
+- **デバッグ出力**: 各ステップで中間結果を保存し、Pythonと比較可能
+
+### ビルド方法
+
+```bash
+cd swagger-cpp
+mkdir -p build && cd build
+cmake ..
+make -j4
+```
+
+### 実行方法
+
+```bash
+./swagger_cpp \
+  --map ../../data/maps/example.pgm \
+  --resolution 0.05 \
+  --safety-distance 0.5 \
+  --output ../../output/cpp
+```
+
+詳細は `swagger-cpp/README.md` を参照してください。
+
+---
+
+## 比較・デバッグツール
+
+Python実装とC++実装の動作を比較するためのツールが `tools/` ディレクトリに用意されています。
+
+### 主なツール
+
+#### `compare_distance_transform.py`
+Step 1の距離変換の出力を比較します。
+
+```bash
+python tools/compare_distance_transform.py
+```
+
+#### `compare_step_by_step.py`
+各ステップのグラフを段階的に比較します。
+
+```bash
+python tools/compare_step_by_step.py
+```
+
+#### `visualize_steps.py`
+Pythonパイプラインの各ステップを可視化します。
+
+```bash
+python tools/visualize_steps.py
+```
+
+詳細は `tools/README.md` を参照してください。
 
 ---
 
