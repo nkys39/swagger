@@ -143,8 +143,14 @@ def main():
         occupancy_threshold=occupancy_threshold,
     )
 
-    python_nodes = np.array(list(python_graph.nodes()))
+    # Get nodes as list of (row, col) tuples and ensure proper 2D array format
+    nodes_list = list(python_graph.nodes())
+    python_nodes = np.array([(int(node[0]), int(node[1])) for node in nodes_list], dtype=np.float32)
     print(f"Python完了: {len(python_nodes)} ノード")
+
+    if len(python_nodes) == 0:
+        print("エラー: Pythonグラフにノードがありません")
+        return 1
 
     # Load C++ graph from JSON
     cpp_json_path = "output/waypoint_graph.json"
