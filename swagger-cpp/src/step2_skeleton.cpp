@@ -74,11 +74,27 @@ cv::Mat SkeletonGraphBuilder::compute_skeleton(const cv::Mat& free_map) {
     // Threshold to ensure binary (0 or 255)
     cv::threshold(binary, binary, 127, 255, cv::THRESH_BINARY);
 
-    // Apply thinning to get skeleton
-    cv::Mat skeleton;
-    cv::ximgproc::thinning(binary, skeleton, cv::ximgproc::THINNING_ZHANGSUEN);
+    // Try both thinning methods and save for comparison
+    cv::Mat skeleton_zhangsuen, skeleton_guohall;
 
-    return skeleton;
+    // Method 1: Zhang-Suen (original)
+    cv::ximgproc::thinning(binary, skeleton_zhangsuen, cv::ximgproc::THINNING_ZHANGSUEN);
+
+    // Method 2: Guo-Hall (trying to match Python)
+    cv::ximgproc::thinning(binary, skeleton_guohall, cv::ximgproc::THINNING_GUOHALL);
+
+    // Save both for comparison
+    std::string debug_dir = "debug_output";
+    #ifdef _WIN32
+        _mkdir(debug_dir.c_str());
+    #else
+        mkdir(debug_dir.c_str(), 0755);
+    #endif
+    cv::imwrite(debug_dir + "/skeleton_cpp_zhangsuen.png", skeleton_zhangsuen);
+    cv::imwrite(debug_dir + "/skeleton_cpp_guohall.png", skeleton_guohall);
+
+    // Use Guo-Hall method (attempting to match Python's skimage)
+    return skeleton_guohall;
 }
 
 int SkeletonGraphBuilder::count_neighbors(const cv::Mat& skeleton, int y, int x) {
@@ -322,6 +338,7 @@ void SkeletonGraphBuilder::build_skeleton_graph(
 
     // Compute skeleton
     log("スケルトン（medial axis）を計算中...", verbose);
+    log("使用メソッド: Guo-Hall (Pythonのskimageに合わせるため)", verbose);
     cv::Mat skeleton = compute_skeleton(free_map);
 
     int skeleton_pixels = cv::countNonZero(skeleton);
@@ -348,8 +365,11 @@ void SkeletonGraphBuilder::build_skeleton_graph(
         #else
             mkdir(debug_dir.c_str(), 0755);
         #endif
-        cv::imwrite(debug_dir + "/skeleton_cpp.png", skeleton);
-        log("スケルトン画像を保存しました: debug_output/skeleton_cpp.png", verbose);
+        cv::imwrite(debug_dir + "/skeleton_cpp_final.png", skeleton);
+        log("スケルトン画像を保存しました:", verbose);
+        log("  - debug_output/skeleton_cpp_zhangsuen.png (Zhang-Suen法)", verbose);
+        log("  - debug_output/skeleton_cpp_guohall.png (Guo-Hall法)", verbose);
+        log("  - debug_output/skeleton_cpp_final.png (使用中: Guo-Hall)", verbose);
     }
 
     // Extract branches from skeleton
