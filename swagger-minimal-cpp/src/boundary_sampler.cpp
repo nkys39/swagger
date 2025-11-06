@@ -62,9 +62,11 @@ std::vector<std::vector<cv::Point>> BoundarySampler::find_obstacle_contours(
     const cv::Mat& dist_transform,
     double boundary_inflation_px
 ) {
-    // Filter obstacles by boundary inflation
+    // Match Python's logic: dist_transform >= boundary_inflation
+    // Note: cv::threshold with THRESH_BINARY uses '>' (greater than), but we need '>=' (greater or equal)
+    // So we subtract a small epsilon to include the boundary value
     cv::Mat filtered;
-    cv::threshold(dist_transform, filtered, boundary_inflation_px, 255, cv::THRESH_BINARY);
+    cv::threshold(dist_transform, filtered, boundary_inflation_px - 1e-6, 255, cv::THRESH_BINARY);
     filtered.convertTo(filtered, CV_8U);
 
     // Find contours
@@ -130,6 +132,15 @@ void BoundarySampler::sample_boundaries(
     auto contours = find_obstacle_contours(step1_data.dist_transform, boundary_inflation_px);
     log(std::to_string(contours.size()) + "個の輪郭を検出しました", verbose);
 
+    if (verbose) {
+        // Show contour details for debugging
+        size_t total_contour_vertices = 0;
+        for (const auto& contour : contours) {
+            total_contour_vertices += contour.size();
+        }
+        log("  輪郭の総頂点数: " + std::to_string(total_contour_vertices), verbose);
+    }
+
     size_t initial_num_nodes = graph.num_nodes();
 
     // Process each contour
@@ -150,12 +161,23 @@ void BoundarySampler::sample_boundaries(
             double segment_length = cv::norm(p2 - p1);
 
             // Add intermediate points
+            // Match Python's implementation: np.linspace(p1, p2, num=num_intermediate, endpoint=False)[1:]
             int num_intermediate = static_cast<int>(segment_length / sample_distance_px);
             if (num_intermediate > 0) {
+                // Generate points using linspace logic (endpoint=False)
                 for (int j = 1; j < num_intermediate; ++j) {
-                    double t = static_cast<double>(j) / num_intermediate;
-                    int x = static_cast<int>(p1.x + t * (p2.x - p1.x));
-                    int y = static_cast<int>(p1.y + t * (p2.y - p1.y));
+                    // Python: np.linspace divides the range into num_intermediate equal parts
+                    // and takes points at fractions j/num_intermediate (j = 0, 1, ..., num_intermediate-1)
+                    // Then [1:] skips the first point (j=0)
+                    double t = static_cast<double>(j) / static_cast<double>(num_intermediate);
+
+                    // Calculate floating point coordinates first, then convert to int
+                    // This matches Python's: linspace(...).astype(int)
+                    double fx = p1.x + t * (p2.x - p1.x);
+                    double fy = p1.y + t * (p2.y - p1.y);
+
+                    int x = static_cast<int>(fx);
+                    int y = static_cast<int>(fy);
 
                     NodeId node(y, x);
                     contour_nodes.push_back(node);
