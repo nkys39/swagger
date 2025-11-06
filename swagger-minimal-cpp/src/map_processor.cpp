@@ -35,7 +35,9 @@ void MapProcessor::distance_transform(
 
     // Filter by safety distance
     double threshold_px = safety_distance / resolution;
-    cv::Mat inflated_full = dist_full < threshold_px;
+    cv::Mat inflated_full;
+    cv::compare(dist_full, threshold_px, inflated_full, cv::CMP_LT);
+    inflated_full.convertTo(inflated_full, CV_8U);
 
     // Remove padding
     dist_transform_out = dist_full(cv::Rect(1, 1, free_map.cols, free_map.rows)).clone();
@@ -73,7 +75,9 @@ Step1Data MapProcessor::preprocess(
     }
 
     // Create free space map
-    data.free_map = data.original_map > occupancy_threshold;
+    cv::Mat free_map_bool = data.original_map > occupancy_threshold;
+    free_map_bool.convertTo(data.free_map, CV_8U, 255.0);
+    cv::threshold(data.free_map, data.free_map, 127, 255, cv::THRESH_BINARY);
     int free_pixels = cv::countNonZero(data.free_map);
     int total_pixels = data.free_map.rows * data.free_map.cols;
     double free_percentage = (static_cast<double>(free_pixels) / total_pixels) * 100.0;
